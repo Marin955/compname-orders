@@ -6,16 +6,16 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="compname-orders-utility" />
         <module name="compname-orders-core" />
-        <module name="compname-orders-web" />
         <module name="compname-orders-api" />
+        <module name="compname-orders-utility" />
+        <module name="compname-orders-web" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="compname-orders" target="1.5" />
-      <module name="compname-orders-api" target="1.5" />
-      <module name="compname-orders-core" target="1.5" />
+      <module name="compname-orders-api" target="8" />
+      <module name="compname-orders-core" target="8" />
       <module name="compname-orders-utility" target="1.5" />
       <module name="compname-orders-web" target="1.5" />
     </bytecodeTargetLevel>
