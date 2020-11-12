@@ -57,6 +57,9 @@ public class DbBusiness {
     @Column(name = "rating")
     private Float rating;
 
+    @Column(name = "min_interval")
+    private String minInterval;
+
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "business")
     private Set<DbService> services = new HashSet<>();
 
@@ -123,6 +126,10 @@ public class DbBusiness {
         this.rating = rating;
     }
 
+    public void setMinInterval(String minInterval) { this.minInterval = minInterval; }
+
+    public void setServices(Set<DbService> services) { this.services = services; }
+
     public Long getId() {
         return id;
     }
@@ -178,4 +185,8 @@ public class DbBusiness {
     public Float getRating() {
         return rating;
     }
+
+    public String getMinInterval() { return minInterval; }
+
+    public Set<DbService> getServices() { return services; }
 }

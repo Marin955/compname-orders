@@ -37,7 +37,8 @@ create table business
     phone                   varchar(64),
     mail                    varchar(256),
     website                 varchar(256),
-    rating                  float4
+    rating                  float4,
+    min_interval            varchar(32)
 );
 
 alter table business
