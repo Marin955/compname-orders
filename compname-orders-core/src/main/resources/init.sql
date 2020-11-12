@@ -16,9 +16,9 @@ create sequence s_term;
 
 alter sequence s_term owner to postgres;
 
-create sequence s_user;
+create sequence s_users;
 
-alter sequence s_user owner to postgres;
+alter sequence s_users owner to postgres;
 
 create table business
 (

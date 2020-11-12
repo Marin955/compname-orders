@@ -1,9 +1,8 @@
 package com.compname.orders.web;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 /**
@@ -13,11 +12,9 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
  * @since 1.0
  */
 @SpringBootApplication(scanBasePackages = "com.compname.orders")
-@EnableJpaRepositories
+@EntityScan(basePackages = "com.compname.orders")
+@EnableJpaRepositories(basePackages = "com.compname.orders")
 public class OrdersApplication {
-
-    private final Logger logger = LoggerFactory.getLogger(getClass());
-
     /**
      * Entry point of application.
      *

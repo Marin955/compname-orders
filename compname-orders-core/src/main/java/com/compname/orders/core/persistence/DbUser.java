@@ -7,10 +7,10 @@ import java.util.Set;
 
 @Entity
 @Table(name = "user")
-@SequenceGenerator(name = DbBusiness.SEQUENCE_NAME, sequenceName = DbBusiness.SEQUENCE_NAME, allocationSize = 1)
+@SequenceGenerator(name = DbUser.SEQUENCE_NAME, sequenceName = DbUser.SEQUENCE_NAME, allocationSize = 1)
 public class DbUser {
 
-    public static final String SEQUENCE_NAME = "s_user";
+    public static final String SEQUENCE_NAME = "s_users";
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = SEQUENCE_NAME)
