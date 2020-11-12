@@ -2,6 +2,8 @@ package com.compname.orders.core.persistence;
 
 import javax.persistence.*;
 import java.time.ZonedDateTime;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "user")
@@ -33,8 +35,15 @@ public class DbUser {
     @Column(name = "phone")
     private String phone;
 
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "user")
+    private Set<DbTerm> terms = new HashSet<>();
+
     @Column(name = "strikes")
     private Integer strikes;
+
+    public DbUser() {}
+
+    public DbUser(Long id) { this.id = id; }
 
     public void setId(Long id) {
         this.id = id;
@@ -62,6 +71,10 @@ public class DbUser {
 
     public void setPhone(String phone) {
         this.phone = phone;
+    }
+
+    public void setTerms(Set<DbTerm> terms) {
+        this.terms = terms;
     }
 
     public void setStrikes(Integer strikes) {
@@ -94,6 +107,10 @@ public class DbUser {
 
     public String getPhone() {
         return phone;
+    }
+
+    public Set<DbTerm> getTerms() {
+        return terms;
     }
 
     public Integer getStrikes() {

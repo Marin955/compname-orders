@@ -17,7 +17,7 @@
       <module name="compname-orders-api" target="8" />
       <module name="compname-orders-core" target="8" />
       <module name="compname-orders-utility" target="1.5" />
-      <module name="compname-orders-web" target="1.5" />
+      <module name="compname-orders-web" target="8" />
     </bytecodeTargetLevel>
   </component>
 </project>

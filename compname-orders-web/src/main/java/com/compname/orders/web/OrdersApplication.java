@@ -4,6 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 /**
  * Main application class.
@@ -12,6 +13,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  * @since 1.0
  */
 @SpringBootApplication(scanBasePackages = "com.compname.orders")
+@EnableJpaRepositories
 public class OrdersApplication {
 
     private final Logger logger = LoggerFactory.getLogger(getClass());
@@ -21,7 +23,5 @@ public class OrdersApplication {
      *
      * @param args  [{@link String[]}] :: args
      */
-    public static void main(String[] args) {
-        SpringApplication.run(OrdersApplication.class, args);
-    }
+    public static void main(String[] args) { SpringApplication.run(OrdersApplication.class, args); }
 }

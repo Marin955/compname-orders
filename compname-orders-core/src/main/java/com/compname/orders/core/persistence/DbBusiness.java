@@ -2,6 +2,8 @@ package com.compname.orders.core.persistence;
 
 import javax.persistence.*;
 import java.time.ZonedDateTime;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "business")
@@ -55,7 +57,8 @@ public class DbBusiness {
     @Column(name = "rating")
     private Float rating;
 
-    // to be continued
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "business")
+    private Set<DbService> services = new HashSet<>();
 
     public DbBusiness() {
     }
