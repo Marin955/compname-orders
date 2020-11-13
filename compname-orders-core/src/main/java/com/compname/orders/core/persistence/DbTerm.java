@@ -1,8 +1,15 @@
 package com.compname.orders.core.persistence;
 
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 import javax.persistence.*;
 import java.time.ZonedDateTime;
 
+@NoArgsConstructor
+@Setter
+@Getter
 @Entity
 @Table(name = "term")
 @SequenceGenerator(name = DbTerm.SEQUENCE_NAME, sequenceName = DbTerm.SEQUENCE_NAME, allocationSize = 1)
@@ -29,47 +36,5 @@ public class DbTerm {
     @Column(name = "to")
     private ZonedDateTime to;
 
-    public DbTerm() { }
-
     public DbTerm(Long id) { this.id = id; }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public void setService(DbService service) {
-        this.service = service;
-    }
-
-    public void setUser(DbUser user) {
-        this.user = user;
-    }
-
-    public void setFrom(ZonedDateTime from) {
-        this.from = from;
-    }
-
-    public void setTo(ZonedDateTime to) {
-        this.to = to;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public DbService getService() {
-        return service;
-    }
-
-    public DbUser getUser() {
-        return user;
-    }
-
-    public ZonedDateTime getFrom() {
-        return from;
-    }
-
-    public ZonedDateTime getTo() {
-        return to;
-    }
 }

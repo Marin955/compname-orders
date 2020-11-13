@@ -9,6 +9,10 @@ import lombok.Setter;
 @AllArgsConstructor
 @Setter
 @Getter
-public abstract class ApiIdRequest extends ApiRequest {
-    private Long id;
+public abstract class ApiRequest {
+
+    private Long providerId;
+    private String channel;
+    private String user;
+
 }

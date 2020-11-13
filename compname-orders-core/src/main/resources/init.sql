@@ -20,6 +20,28 @@ create sequence s_users;
 
 alter sequence s_users owner to postgres;
 
+create sequence s_city;
+
+alter sequence s_city owner to postgres;
+
+create table city
+(
+    id                      bigint       not null
+        constraint pk_city_id
+            primary key,
+    name                    varchar(256) not null,
+    postal_code             varchar(16)
+);
+
+alter table city
+    owner to postgres;
+
+create unique index uk_city_name
+    on city (name);
+
+create unique index uk_postal_code
+    on city (postal_code);
+
 create table business
 (
     id                      bigint       not null
@@ -28,9 +50,11 @@ create table business
     oib                     bigint      not null,
     name                    varchar(256) not null,
     created                 timestamp   not null,
-    created_by               varchar(64) not null,
-    city                    varchar(256) not null,
-    postal_code              int         not null,
+    created_by              varchar(64) not null,
+    city_id                 bigint      not null
+        constraint fk_business_city_id
+            references city
+            on delete cascade,
     address                 varchar(512) not null,
     longitude               float4      not null,
     latitude                float4      not null,
@@ -47,7 +71,6 @@ alter table business
 create unique index uk_business_oib
     on business (oib);
 
-
 create unique index uk_business_id
     on business (id);
 
@@ -61,6 +84,9 @@ create table service
             references business
             on delete cascade,
     name        varchar(256)    not null,
+    created                 timestamp   not null,
+    created_by               varchar(64) not null,
+    price               float4,
     duration    varchar(32)
 );
 

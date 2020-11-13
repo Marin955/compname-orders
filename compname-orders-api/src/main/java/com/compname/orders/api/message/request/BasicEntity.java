@@ -1,47 +1,30 @@
 package com.compname.orders.api.message.request;
 
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 import java.time.ZonedDateTime;
 
+@NoArgsConstructor
+@Setter
+@Getter
 public abstract class BasicEntity extends ApiIdRequest {
 
     private String name;
     private ZonedDateTime created;
     private String createdBy;
 
-    public BasicEntity(String name, ZonedDateTime created, String createdBy) {
-        this.name = name;
-        this.created = created;
-        this.createdBy = createdBy;
-    }
-
-    public BasicEntity(Long id, String name, ZonedDateTime created, String createdBy) {
+    public BasicEntity(Long id, String name, String createdBy) {
         super(id);
         this.name = name;
-        this.created = created;
+        this.created = ZonedDateTime.now();
         this.createdBy = createdBy;
     }
 
-    public void setName(String name) {
+    public BasicEntity(String name, String createdBy) {
         this.name = name;
-    }
-
-    public void setCreated(ZonedDateTime created) {
-        this.created = created;
-    }
-
-    public void setCreatedBy(String createdBy) {
+        this.created = ZonedDateTime.now();
         this.createdBy = createdBy;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public ZonedDateTime getCreated() {
-        return created;
-    }
-
-    public String getCreatedBy() {
-        return createdBy;
     }
 }

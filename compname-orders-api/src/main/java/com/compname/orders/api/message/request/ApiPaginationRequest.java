@@ -7,8 +7,9 @@ import lombok.Setter;
 
 @NoArgsConstructor
 @AllArgsConstructor
-@Setter
 @Getter
-public abstract class ApiIdRequest extends ApiRequest {
-    private Long id;
+@Setter
+public class ApiPaginationRequest extends ApiRequest {
+    private Integer pageNumber;
+    private Integer pageSize;
 }

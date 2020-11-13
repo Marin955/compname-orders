@@ -1,10 +1,17 @@
 package com.compname.orders.core.persistence;
 
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 import javax.persistence.*;
 import java.time.ZonedDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
+@NoArgsConstructor
+@Setter
+@Getter
 @Entity
 @Table(name = "business")
 @SequenceGenerator(name = DbBusiness.SEQUENCE_NAME, sequenceName = DbBusiness.SEQUENCE_NAME, allocationSize = 1)
@@ -30,11 +37,9 @@ public class DbBusiness {
     @Column(name = "created_by")
     private String createdBy;
 
-    @Column(name = "city")
-    private String city;
-
-    @Column(name = "postal_code")
-    private Integer postalCode;
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "city_id", nullable = false)
+    private DbCity city;
 
     @Column(name = "address")
     private String address;
@@ -63,130 +68,7 @@ public class DbBusiness {
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "business")
     private Set<DbService> services = new HashSet<>();
 
-    public DbBusiness() {
-    }
-
     public DbBusiness(Long id) {
         this.id = id;
     }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public void setOib(Long oib) {
-        this.oib = oib;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public void setCreated(ZonedDateTime created) {
-        this.created = created;
-    }
-
-    public void setCreatedBy(String createdBy) {
-        this.createdBy = createdBy;
-    }
-
-    public void setCity(String city) {
-        this.city = city;
-    }
-
-    public void setPostalCode(Integer postalCode) {
-        this.postalCode = postalCode;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
-    }
-
-    public void setLongitude(Float longitude) {
-        this.longitude = longitude;
-    }
-
-    public void setLatitude(Float latitude) {
-        this.latitude = latitude;
-    }
-
-    public void setPhone(String phone) {
-        this.phone = phone;
-    }
-
-    public void setMail(String mail) {
-        this.mail = mail;
-    }
-
-    public void setWebsite(String website) {
-        this.website = website;
-    }
-
-    public void setRating(Float rating) {
-        this.rating = rating;
-    }
-
-    public void setMinInterval(String minInterval) { this.minInterval = minInterval; }
-
-    public void setServices(Set<DbService> services) { this.services = services; }
-
-    public Long getId() {
-        return id;
-    }
-
-    public Long getOib() {
-        return oib;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public ZonedDateTime getCreated() {
-        return created;
-    }
-
-    public String getCreatedBy() {
-        return createdBy;
-    }
-
-    public String getCity() {
-        return city;
-    }
-
-    public Integer getPostalCode() {
-        return postalCode;
-    }
-
-    public String getAddress() {
-        return address;
-    }
-
-    public Float getLongitude() {
-        return longitude;
-    }
-
-    public Float getLatitude() {
-        return latitude;
-    }
-
-    public String getPhone() {
-        return phone;
-    }
-
-    public String getMail() {
-        return mail;
-    }
-
-    public String getWebsite() {
-        return website;
-    }
-
-    public Float getRating() {
-        return rating;
-    }
-
-    public String getMinInterval() { return minInterval; }
-
-    public Set<DbService> getServices() { return services; }
 }
