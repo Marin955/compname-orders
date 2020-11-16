@@ -1,25 +1,27 @@
 package com.compname.orders.web.controller;
 
-import com.compname.orders.api.message.request.business.*;
-import com.compname.orders.api.message.response.business.*;
-import com.compname.orders.core.peer.BusinessPeer;
+import com.compname.orders.api.message.request.term.*;
+import com.compname.orders.api.message.response.term.*;
+import com.compname.orders.core.peer.TermPeer;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
-@AllArgsConstructor
-@RequestMapping("/business")
-@RestController
-public class BusinessController {
+import java.time.ZonedDateTime;
 
-    private final BusinessPeer peer;
+@AllArgsConstructor
+@RequestMapping("/term")
+@RestController
+public class TermController {
+
+    private final TermPeer peer;
 
     @PostMapping
     public @ResponseBody
-    CreateBusinessResponse create(
+    CreateTermResponse create(
             @RequestHeader("providerId") Long providerId,
             @RequestHeader("channel") String channel,
             @RequestHeader("user") String user,
-            @RequestBody CreateBusinessRequest request
+            @RequestBody CreateTermRequest request
     ) {
         request.setProviderId(providerId);
         request.setChannel(channel);
@@ -30,13 +32,13 @@ public class BusinessController {
 
     @GetMapping("/{id}")
     public @ResponseBody
-    GetBusinessResponse get(
+    GetTermResponse get(
             @RequestHeader("providerId") Long providerId,
             @RequestHeader("channel") String channel,
             @RequestHeader("user") String user,
             @PathVariable("id") Long id
     ) {
-        GetBusinessRequest request = new GetBusinessRequest();
+        GetTermRequest request = new GetTermRequest();
 
         request.setProviderId(providerId);
         request.setChannel(channel);
@@ -48,13 +50,13 @@ public class BusinessController {
 
     @DeleteMapping("/{id}")
     public @ResponseBody
-    DeleteBusinessResponse delete(
+    DeleteTermResponse delete(
             @RequestHeader("providerId") Long providerId,
             @RequestHeader("channel") String channel,
             @RequestHeader("user") String user,
             @PathVariable("id") Long id
     ) {
-        DeleteBusinessRequest request = new DeleteBusinessRequest();
+        DeleteTermRequest request = new DeleteTermRequest();
 
         request.setProviderId(providerId);
         request.setChannel(channel);
@@ -66,24 +68,26 @@ public class BusinessController {
 
     @GetMapping
     public @ResponseBody
-    SearchBusinessResponse search(
+    SearchTermResponse search(
             @RequestHeader("providerId") Long providerId,
             @RequestHeader("channel") String channel,
             @RequestHeader("user") String user,
-            @RequestParam(value = "oib", required = false) Long oib,
-            @RequestParam(value = "name", required = false) String name,
-            @RequestParam(value = "city", required = false) String city,
+            @RequestParam(value = "serviceId", required = false) Long serviceId,
+            @RequestParam(value = "userId", required = false) Long userId,
+            @RequestParam(value = "from", required = false) ZonedDateTime from,
+            @RequestParam(value = "to", required = false) ZonedDateTime to,
             @RequestParam(value = "pageSize", required = false) Integer pageSize,
             @RequestParam(value = "pageNumber", required = false) Integer pageNumber
     ) {
-        SearchBusinessRequest request = new SearchBusinessRequest();
+        SearchTermRequest request = new SearchTermRequest();
 
         request.setProviderId(providerId);
         request.setChannel(channel);
         request.setUser(user);
-        request.setOib(oib);
-        request.setName(name);
-        request.setCity(city);
+        request.setServiceId(serviceId);
+        request.setUserId(userId);
+        request.setFrom(from);
+        request.setTo(to);
         request.setPageSize(pageSize);
         request.setPageNumber(pageNumber);
 
@@ -92,12 +96,12 @@ public class BusinessController {
 
     @PutMapping("/{id}")
     public @ResponseBody
-    UpdateBusinessResponse update(
+    UpdateTermResponse update(
             @RequestHeader("providerId") Long providerId,
             @RequestHeader("channel") String channel,
             @RequestHeader("user") String user,
             @PathVariable("id") Long id,
-            @RequestBody UpdateBusinessRequest request
+            @RequestBody UpdateTermRequest request
     ) {
         request.setProviderId(providerId);
         request.setChannel(channel);

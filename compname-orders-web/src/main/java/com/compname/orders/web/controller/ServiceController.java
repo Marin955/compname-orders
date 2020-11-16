@@ -1,25 +1,25 @@
 package com.compname.orders.web.controller;
 
-import com.compname.orders.api.message.request.business.*;
-import com.compname.orders.api.message.response.business.*;
-import com.compname.orders.core.peer.BusinessPeer;
+import com.compname.orders.api.message.request.service.*;
+import com.compname.orders.api.message.response.service.*;
+import com.compname.orders.core.peer.ServicePeer;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 @AllArgsConstructor
-@RequestMapping("/business")
+@RequestMapping("/service")
 @RestController
-public class BusinessController {
+public class ServiceController {
 
-    private final BusinessPeer peer;
+    private final ServicePeer peer;
 
     @PostMapping
     public @ResponseBody
-    CreateBusinessResponse create(
+    CreateServiceResponse create(
             @RequestHeader("providerId") Long providerId,
             @RequestHeader("channel") String channel,
             @RequestHeader("user") String user,
-            @RequestBody CreateBusinessRequest request
+            @RequestBody CreateServiceRequest request
     ) {
         request.setProviderId(providerId);
         request.setChannel(channel);
@@ -30,13 +30,13 @@ public class BusinessController {
 
     @GetMapping("/{id}")
     public @ResponseBody
-    GetBusinessResponse get(
+    GetServiceResponse get(
             @RequestHeader("providerId") Long providerId,
             @RequestHeader("channel") String channel,
             @RequestHeader("user") String user,
             @PathVariable("id") Long id
     ) {
-        GetBusinessRequest request = new GetBusinessRequest();
+        GetServiceRequest request = new GetServiceRequest();
 
         request.setProviderId(providerId);
         request.setChannel(channel);
@@ -48,13 +48,13 @@ public class BusinessController {
 
     @DeleteMapping("/{id}")
     public @ResponseBody
-    DeleteBusinessResponse delete(
+    DeleteServiceResponse delete(
             @RequestHeader("providerId") Long providerId,
             @RequestHeader("channel") String channel,
             @RequestHeader("user") String user,
             @PathVariable("id") Long id
     ) {
-        DeleteBusinessRequest request = new DeleteBusinessRequest();
+        DeleteServiceRequest request = new DeleteServiceRequest();
 
         request.setProviderId(providerId);
         request.setChannel(channel);
@@ -66,24 +66,22 @@ public class BusinessController {
 
     @GetMapping
     public @ResponseBody
-    SearchBusinessResponse search(
+    SearchServiceResponse search(
             @RequestHeader("providerId") Long providerId,
             @RequestHeader("channel") String channel,
             @RequestHeader("user") String user,
-            @RequestParam(value = "oib", required = false) Long oib,
             @RequestParam(value = "name", required = false) String name,
-            @RequestParam(value = "city", required = false) String city,
+            @RequestParam(value = "businnesId", required = false) Long businessId,
             @RequestParam(value = "pageSize", required = false) Integer pageSize,
             @RequestParam(value = "pageNumber", required = false) Integer pageNumber
     ) {
-        SearchBusinessRequest request = new SearchBusinessRequest();
+        SearchServiceRequest request = new SearchServiceRequest();
 
         request.setProviderId(providerId);
         request.setChannel(channel);
         request.setUser(user);
-        request.setOib(oib);
+        request.setBusinessId(businessId);
         request.setName(name);
-        request.setCity(city);
         request.setPageSize(pageSize);
         request.setPageNumber(pageNumber);
 
@@ -92,12 +90,12 @@ public class BusinessController {
 
     @PutMapping("/{id}")
     public @ResponseBody
-    UpdateBusinessResponse update(
+    UpdateServiceResponse update(
             @RequestHeader("providerId") Long providerId,
             @RequestHeader("channel") String channel,
             @RequestHeader("user") String user,
             @PathVariable("id") Long id,
-            @RequestBody UpdateBusinessRequest request
+            @RequestBody UpdateServiceRequest request
     ) {
         request.setProviderId(providerId);
         request.setChannel(channel);

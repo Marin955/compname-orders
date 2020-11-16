@@ -11,7 +11,6 @@ import lombok.Setter;
 @Setter
 @Getter
 public class SearchServiceRequest extends ApiPaginationRequest {
-    private Long id;
     private Long businessId;
     private String name;
 }

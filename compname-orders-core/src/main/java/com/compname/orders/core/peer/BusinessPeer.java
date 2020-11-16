@@ -1,39 +1,42 @@
 package com.compname.orders.core.peer;
 
 import com.compname.orders.api.message.request.business.*;
+import com.compname.orders.api.message.response.ResponseCode;
+import com.compname.orders.api.message.response.business.*;
+import com.compname.orders.api.model.business.Address;
+import com.compname.orders.api.model.business.Business;
+import com.compname.orders.api.model.business.ContactInfo;
+import com.compname.orders.api.model.business.Geolocation;
 import com.compname.orders.api.service.BusinessService;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.time.ZonedDateTime;
 
 @Service
 @Transactional
 public class BusinessPeer implements BusinessService {
 
     @Override
-    public ResponseEntity<Object> create(CreateBusinessRequest request) {
-        return new ResponseEntity<>(request.getName(), HttpStatus.OK);
+    public CreateBusinessResponse create(CreateBusinessRequest request) {
+        return null;
     }
 
     @Override
-    public ResponseEntity<Object> get(GetBusinessRequest request) {
-        return new ResponseEntity<>(request.getId(), HttpStatus.OK);
+    public GetBusinessResponse get(GetBusinessRequest request) { return null; }
+
+    @Override
+    public DeleteBusinessResponse delete(DeleteBusinessRequest request) {
+        return null;
     }
 
     @Override
-    public ResponseEntity<Object> delete(DeleteBusinessRequest request) {
-        return new ResponseEntity<>(request.getId(), HttpStatus.OK);
+    public SearchBusinessResponse search(SearchBusinessRequest request) {
+        return null;
     }
 
     @Override
-    public ResponseEntity<Object> search(SearchBusinessRequest request) {
-        return new ResponseEntity<>(request.getName(), HttpStatus.OK);
-    }
-
-    @Override
-    public ResponseEntity<Object> update(UpdateBusinessRequest request) {
-        return new ResponseEntity<>(request.getName(), HttpStatus.OK);
+    public UpdateBusinessResponse update(UpdateBusinessRequest request) {
+        return null;
     }
 }

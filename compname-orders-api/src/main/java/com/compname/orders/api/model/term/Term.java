@@ -1,6 +1,6 @@
-package com.compname.orders.api.message.request.term;
+package com.compname.orders.api.model.term;
 
-import com.compname.orders.api.message.request.ApiIdRequest;
+import com.compname.orders.api.model.ApiIdEntity;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -10,16 +10,16 @@ import java.time.ZonedDateTime;
 
 @NoArgsConstructor
 @AllArgsConstructor
-@Setter
 @Getter
-public class CreateTermRequest extends ApiIdRequest {
+@Setter
+public class Term extends ApiIdEntity {
 
     private Long serviceId;
     private Long userId;
     private ZonedDateTime from;
     private ZonedDateTime to;
 
-    public CreateTermRequest(Long id, Long serviceId, Long userId, ZonedDateTime from, ZonedDateTime to) {
+    public Term(Long id, Long serviceId, Long userId, ZonedDateTime from, ZonedDateTime to) {
         super(id);
         this.serviceId = serviceId;
         this.userId = userId;

@@ -1,12 +1,12 @@
 package com.compname.orders.api.service;
 
 import com.compname.orders.api.message.request.business.*;
-import org.springframework.http.ResponseEntity;
+import com.compname.orders.api.message.response.business.*;
 
 public interface BusinessService {
-    ResponseEntity<Object> create(CreateBusinessRequest request);
-    ResponseEntity<Object> get(GetBusinessRequest request);
-    ResponseEntity<Object> delete(DeleteBusinessRequest request);
-    ResponseEntity<Object> search(SearchBusinessRequest request);
-    ResponseEntity<Object> update(UpdateBusinessRequest request);
+    CreateBusinessResponse create(CreateBusinessRequest request);
+    GetBusinessResponse get(GetBusinessRequest request);
+    DeleteBusinessResponse delete(DeleteBusinessRequest request);
+    SearchBusinessResponse search(SearchBusinessRequest request);
+    UpdateBusinessResponse update(UpdateBusinessRequest request);
 }

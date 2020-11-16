@@ -1,9 +1,9 @@
 package com.compname.orders.api.message.request.business;
 
 import com.compname.orders.api.message.request.BasicEntity;
-import com.compname.orders.api.model.Address;
-import com.compname.orders.api.model.ContactInfo;
-import com.compname.orders.api.model.Geolocation;
+import com.compname.orders.api.model.business.Address;
+import com.compname.orders.api.model.business.ContactInfo;
+import com.compname.orders.api.model.business.Geolocation;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;

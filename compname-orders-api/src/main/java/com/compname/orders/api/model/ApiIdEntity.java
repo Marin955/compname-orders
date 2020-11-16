@@ -1,4 +1,4 @@
-package com.compname.orders.api.message.request;
+package com.compname.orders.api.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -9,7 +9,6 @@ import lombok.Setter;
 @AllArgsConstructor
 @Getter
 @Setter
-public class ApiPaginationRequest extends ApiIdRequest {
-    private Integer pageNumber;
-    private Integer pageSize;
+public abstract class ApiIdEntity {
+    Long id;
 }
