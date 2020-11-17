@@ -3,6 +3,7 @@ package com.compname.orders.web.controller;
 import com.compname.orders.api.message.request.user.*;
 import com.compname.orders.api.message.response.user.*;
 import com.compname.orders.core.peer.UserPeer;
+import com.compname.orders.utility.OrdersServiceException;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,7 +23,7 @@ public class UserController {
             @RequestHeader("channel") String channel,
             @RequestHeader("user") String user,
             @RequestBody CreateUserRequest request
-    ) {
+    ) throws OrdersServiceException {
         request.setProviderId(providerId);
         request.setChannel(channel);
         request.setUser(user);
@@ -37,7 +38,7 @@ public class UserController {
             @RequestHeader("channel") String channel,
             @RequestHeader("user") String user,
             @PathVariable("id") Long id
-    ) {
+    ) throws OrdersServiceException {
         GetUserRequest request = new GetUserRequest();
 
         request.setProviderId(providerId);
@@ -55,7 +56,7 @@ public class UserController {
             @RequestHeader("channel") String channel,
             @RequestHeader("user") String user,
             @PathVariable("id") Long id
-    ) {
+    ) throws OrdersServiceException {
         DeleteUserRequest request = new DeleteUserRequest();
 
         request.setProviderId(providerId);
@@ -78,7 +79,7 @@ public class UserController {
             @RequestParam(value = "strikes", required = false) Integer strikes,
             @RequestParam(value = "pageSize", required = false) Integer pageSize,
             @RequestParam(value = "pageNumber", required = false) Integer pageNumber
-    ) {
+    ) throws OrdersServiceException {
         SearchUserRequest request = new SearchUserRequest();
 
         request.setProviderId(providerId);
@@ -102,7 +103,7 @@ public class UserController {
             @RequestHeader("user") String user,
             @PathVariable("id") Long id,
             @RequestBody UpdateUserRequest request
-    ) {
+    ) throws OrdersServiceException {
         request.setProviderId(providerId);
         request.setChannel(channel);
         request.setUser(user);

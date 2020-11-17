@@ -2,7 +2,7 @@ package com.compname.orders.api.message.response.service;
 
 import com.compname.orders.api.message.request.ApiRequest;
 import com.compname.orders.api.message.response.ApiPayloadResponse;
-import com.compname.orders.api.message.response.ResponseCode;
+import com.compname.orders.utility.ResponseCode;
 import com.compname.orders.api.model.service.Service;
 import com.compname.orders.api.model.service.ServiceFacade;
 

@@ -3,6 +3,7 @@ package com.compname.orders.web.controller;
 import com.compname.orders.api.message.request.business.*;
 import com.compname.orders.api.message.response.business.*;
 import com.compname.orders.core.peer.BusinessPeer;
+import com.compname.orders.utility.OrdersServiceException;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,7 +21,7 @@ public class BusinessController {
             @RequestHeader("channel") String channel,
             @RequestHeader("user") String user,
             @RequestBody CreateBusinessRequest request
-    ) {
+    ) throws OrdersServiceException {
         request.setProviderId(providerId);
         request.setChannel(channel);
         request.setUser(user);
@@ -35,7 +36,7 @@ public class BusinessController {
             @RequestHeader("channel") String channel,
             @RequestHeader("user") String user,
             @PathVariable("id") Long id
-    ) {
+    ) throws OrdersServiceException {
         GetBusinessRequest request = new GetBusinessRequest();
 
         request.setProviderId(providerId);
@@ -53,7 +54,7 @@ public class BusinessController {
             @RequestHeader("channel") String channel,
             @RequestHeader("user") String user,
             @PathVariable("id") Long id
-    ) {
+    ) throws OrdersServiceException {
         DeleteBusinessRequest request = new DeleteBusinessRequest();
 
         request.setProviderId(providerId);
@@ -75,7 +76,7 @@ public class BusinessController {
             @RequestParam(value = "city", required = false) String city,
             @RequestParam(value = "pageSize", required = false) Integer pageSize,
             @RequestParam(value = "pageNumber", required = false) Integer pageNumber
-    ) {
+    ) throws OrdersServiceException {
         SearchBusinessRequest request = new SearchBusinessRequest();
 
         request.setProviderId(providerId);
@@ -98,7 +99,7 @@ public class BusinessController {
             @RequestHeader("user") String user,
             @PathVariable("id") Long id,
             @RequestBody UpdateBusinessRequest request
-    ) {
+    ) throws OrdersServiceException {
         request.setProviderId(providerId);
         request.setChannel(channel);
         request.setUser(user);

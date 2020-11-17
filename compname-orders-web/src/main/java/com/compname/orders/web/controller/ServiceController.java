@@ -3,6 +3,7 @@ package com.compname.orders.web.controller;
 import com.compname.orders.api.message.request.service.*;
 import com.compname.orders.api.message.response.service.*;
 import com.compname.orders.core.peer.ServicePeer;
+import com.compname.orders.utility.OrdersServiceException;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,7 +21,7 @@ public class ServiceController {
             @RequestHeader("channel") String channel,
             @RequestHeader("user") String user,
             @RequestBody CreateServiceRequest request
-    ) {
+    ) throws OrdersServiceException {
         request.setProviderId(providerId);
         request.setChannel(channel);
         request.setUser(user);
@@ -35,7 +36,7 @@ public class ServiceController {
             @RequestHeader("channel") String channel,
             @RequestHeader("user") String user,
             @PathVariable("id") Long id
-    ) {
+    ) throws OrdersServiceException {
         GetServiceRequest request = new GetServiceRequest();
 
         request.setProviderId(providerId);
@@ -53,7 +54,7 @@ public class ServiceController {
             @RequestHeader("channel") String channel,
             @RequestHeader("user") String user,
             @PathVariable("id") Long id
-    ) {
+    ) throws OrdersServiceException {
         DeleteServiceRequest request = new DeleteServiceRequest();
 
         request.setProviderId(providerId);
@@ -74,7 +75,7 @@ public class ServiceController {
             @RequestParam(value = "businnesId", required = false) Long businessId,
             @RequestParam(value = "pageSize", required = false) Integer pageSize,
             @RequestParam(value = "pageNumber", required = false) Integer pageNumber
-    ) {
+    ) throws OrdersServiceException {
         SearchServiceRequest request = new SearchServiceRequest();
 
         request.setProviderId(providerId);
@@ -96,7 +97,7 @@ public class ServiceController {
             @RequestHeader("user") String user,
             @PathVariable("id") Long id,
             @RequestBody UpdateServiceRequest request
-    ) {
+    ) throws OrdersServiceException {
         request.setProviderId(providerId);
         request.setChannel(channel);
         request.setUser(user);

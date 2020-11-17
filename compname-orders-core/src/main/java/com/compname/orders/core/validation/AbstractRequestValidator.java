@@ -3,6 +3,7 @@ package com.compname.orders.core.validation;
 import com.compname.orders.api.message.request.ApiIdRequest;
 import com.compname.orders.api.message.request.ApiPaginationRequest;
 import com.compname.orders.api.message.request.ApiRequest;
+import com.compname.orders.utility.OrdersServiceException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -22,7 +23,18 @@ public abstract class AbstractRequestValidator
     private static final Integer MINIMUM_PAGE_SIZE = 1;
     private static final Integer MAXIMUM_ENTITIES_PER_PAGE = 100;
 
-    protected static final String ENTITY_NOT_FOUND = "Entity not found! [id=%s]";
+    protected static final String NAME = "name";
+    protected static final String CREATED = "created";
+    protected static final String CREATED_BY = "created by";
+    protected static final String OIB = "oib";
+    protected static final String ADDRESS = "address";
+    protected static final String PHONE = "phone";
+    protected static final String CITY = "city";
+    protected static final String POSTAL_CODE = "postal code";
+    protected static final String LATITUDE = "latitude";
+    protected static final String LONGITUDE = "longitude";
+    protected static final String BUSINESS_ID = "business id";
+    protected static final String SERVICE_ID = "service id";
 
     /**
      * The Logger.
@@ -147,5 +159,23 @@ public abstract class AbstractRequestValidator
         }
 
         return value;
+    }
+
+    /**
+     * Defends a string.
+     *
+     * @param string    [{@link String}] :: the string to check
+     * @param name      [{@link String}] :: the name of the parameter to be verified
+     *
+     * @return string   [{@link String}] :: the verified string
+     */
+    protected final String notEmpty(String string, String name)
+    {
+        notNull(string, name);
+        if (string.isEmpty()) {
+            throw OrdersServiceException.validationError("Parameter must not be empty [parameter=%s]", name);
+        }
+
+        return string;
     }
 }

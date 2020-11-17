@@ -12,4 +12,12 @@
 
     <artifactId>compname-orders-api</artifactId>
 
+    <dependencies>
+        <dependency>
+            <groupId>com.compname.orders</groupId>
+            <artifactId>compname-orders-utility</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+    </dependencies>
+
 </project>
