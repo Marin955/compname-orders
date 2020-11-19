@@ -1,6 +1,7 @@
 package com.compname.orders.api.message.response;
 
 import com.compname.orders.api.message.request.ApiRequest;
+import com.compname.orders.api.model.ApiEntity;
 import com.compname.orders.utility.ResponseCode;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -11,7 +12,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @Setter
 @Getter
-public abstract class ApiPayloadResponse<T> extends ApiResponse{
+public abstract class ApiPayloadResponse<T extends ApiEntity> extends ApiResponse {
     private T payload;
 
     public ApiPayloadResponse(ApiRequest request, ResponseCode responseCode, T payload) {
