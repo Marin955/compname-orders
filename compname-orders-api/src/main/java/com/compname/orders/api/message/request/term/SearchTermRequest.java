@@ -13,7 +13,7 @@ import java.time.ZonedDateTime;
 @Getter
 @Setter
 public class SearchTermRequest extends ApiPaginationRequest {
-    private Long serviceId;
+    private Long offerId;
     private Long userId;
     private ZonedDateTime from;
     private ZonedDateTime to;

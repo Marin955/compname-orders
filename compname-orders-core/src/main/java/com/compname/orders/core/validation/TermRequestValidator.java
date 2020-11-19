@@ -22,7 +22,7 @@ public class TermRequestValidator extends AbstractRequestValidator {
 
         notNull(request.getFrom(), FROM_TIME);
         notNull(request.getTo(), TO_TIME);
-        notNull(request.getServiceId(), SERVICE_ID);
+        notNull(request.getOfferId(), OFFER_ID);
 
         return request;
     }

@@ -1,28 +1,26 @@
 package com.compname.orders.web.controller;
 
-import com.compname.orders.api.message.request.term.*;
-import com.compname.orders.api.message.response.term.*;
-import com.compname.orders.core.peer.TermPeer;
+import com.compname.orders.api.message.request.offer.*;
+import com.compname.orders.api.message.response.offer.*;
+import com.compname.orders.core.peer.OfferPeer;
 import com.compname.orders.utility.OrdersServiceException;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.ZonedDateTime;
-
 @AllArgsConstructor
-@RequestMapping("/term")
+@RequestMapping("/offer")
 @RestController
-public class TermController {
+public class OfferController {
 
-    private final TermPeer peer;
+    private final OfferPeer peer;
 
     @PostMapping
     public @ResponseBody
-    CreateTermResponse create(
+    CreateOfferResponse create(
             @RequestHeader("providerId") Long providerId,
             @RequestHeader("channel") String channel,
             @RequestHeader("user") String user,
-            @RequestBody CreateTermRequest request
+            @RequestBody CreateOfferRequest request
     ) throws OrdersServiceException {
         request.setProviderId(providerId);
         request.setChannel(channel);
@@ -33,13 +31,13 @@ public class TermController {
 
     @GetMapping("/{id}")
     public @ResponseBody
-    GetTermResponse get(
+    GetOfferResponse get(
             @RequestHeader("providerId") Long providerId,
             @RequestHeader("channel") String channel,
             @RequestHeader("user") String user,
             @PathVariable("id") Long id
     ) throws OrdersServiceException {
-        GetTermRequest request = new GetTermRequest();
+        GetOfferRequest request = new GetOfferRequest();
 
         request.setProviderId(providerId);
         request.setChannel(channel);
@@ -51,13 +49,13 @@ public class TermController {
 
     @DeleteMapping("/{id}")
     public @ResponseBody
-    DeleteTermResponse delete(
+    DeleteOfferResponse delete(
             @RequestHeader("providerId") Long providerId,
             @RequestHeader("channel") String channel,
             @RequestHeader("user") String user,
             @PathVariable("id") Long id
     ) throws OrdersServiceException {
-        DeleteTermRequest request = new DeleteTermRequest();
+        DeleteOfferRequest request = new DeleteOfferRequest();
 
         request.setProviderId(providerId);
         request.setChannel(channel);
@@ -69,26 +67,22 @@ public class TermController {
 
     @GetMapping
     public @ResponseBody
-    SearchTermResponse search(
+    SearchOfferResponse search(
             @RequestHeader("providerId") Long providerId,
             @RequestHeader("channel") String channel,
             @RequestHeader("user") String user,
-            @RequestParam(value = "offerId", required = false) Long offerId,
-            @RequestParam(value = "userId", required = false) Long userId,
-            @RequestParam(value = "from", required = false) ZonedDateTime from,
-            @RequestParam(value = "to", required = false) ZonedDateTime to,
+            @RequestParam(value = "name", required = false) String name,
+            @RequestParam(value = "businnesId", required = false) Long businessId,
             @RequestParam(value = "pageSize", required = false) Integer pageSize,
             @RequestParam(value = "pageNumber", required = false) Integer pageNumber
     ) throws OrdersServiceException {
-        SearchTermRequest request = new SearchTermRequest();
+        SearchOfferRequest request = new SearchOfferRequest();
 
         request.setProviderId(providerId);
         request.setChannel(channel);
         request.setUser(user);
-        request.setOfferId(offerId);
-        request.setUserId(userId);
-        request.setFrom(from);
-        request.setTo(to);
+        request.setBusinessId(businessId);
+        request.setName(name);
         request.setPageSize(pageSize);
         request.setPageNumber(pageNumber);
 
@@ -97,12 +91,12 @@ public class TermController {
 
     @PutMapping("/{id}")
     public @ResponseBody
-    UpdateTermResponse update(
+    UpdateOfferResponse update(
             @RequestHeader("providerId") Long providerId,
             @RequestHeader("channel") String channel,
             @RequestHeader("user") String user,
             @PathVariable("id") Long id,
-            @RequestBody UpdateTermRequest request
+            @RequestBody UpdateOfferRequest request
     ) throws OrdersServiceException {
         request.setProviderId(providerId);
         request.setChannel(channel);

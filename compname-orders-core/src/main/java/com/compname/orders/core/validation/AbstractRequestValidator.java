@@ -34,7 +34,7 @@ public abstract class AbstractRequestValidator
     protected static final String LATITUDE = "latitude";
     protected static final String LONGITUDE = "longitude";
     protected static final String BUSINESS_ID = "business id";
-    protected static final String SERVICE_ID = "service id";
+    protected static final String OFFER_ID = "offer id";
 
     /**
      * The Logger.

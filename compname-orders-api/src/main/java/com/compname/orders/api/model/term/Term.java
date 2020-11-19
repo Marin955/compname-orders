@@ -14,14 +14,14 @@ import java.time.ZonedDateTime;
 @Setter
 public class Term extends ApiIdEntity {
 
-    private Long serviceId;
+    private Long offerId;
     private Long userId;
     private ZonedDateTime from;
     private ZonedDateTime to;
 
-    public Term(Long id, Long serviceId, Long userId, ZonedDateTime from, ZonedDateTime to) {
+    public Term(Long id, Long offerId, Long userId, ZonedDateTime from, ZonedDateTime to) {
         super(id);
-        this.serviceId = serviceId;
+        this.offerId = offerId;
         this.userId = userId;
         this.from = from;
         this.to = to;

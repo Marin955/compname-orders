@@ -11,11 +11,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @Setter
 @Getter
-public abstract class ApiPayloadResponse<T> extends ApiResponse{
-    private T payload;
-
-    public ApiPayloadResponse(ApiRequest request, ResponseCode responseCode, T payload) {
-        super(request, responseCode);
-        this.payload = payload;
-    }
+public abstract class ApiResponse {
+    private ApiRequest request;
+    private ResponseCode responseCode;
 }

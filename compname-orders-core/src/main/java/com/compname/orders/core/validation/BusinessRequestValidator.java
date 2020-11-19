@@ -45,6 +45,4 @@ public class BusinessRequestValidator extends AbstractRequestValidator {
         validateIdRequest(request);
         return request;
     }
-
-
 }

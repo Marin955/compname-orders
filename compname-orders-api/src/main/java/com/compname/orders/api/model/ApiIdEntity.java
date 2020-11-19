@@ -9,6 +9,6 @@ import lombok.Setter;
 @AllArgsConstructor
 @Getter
 @Setter
-public abstract class ApiIdEntity {
-    Long id;
+public abstract class ApiIdEntity extends ApiEntity {
+    private Long id;
 }

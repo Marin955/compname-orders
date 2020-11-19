@@ -8,9 +8,9 @@ create sequence s_business;
 
 alter sequence s_business owner to postgres;
 
-create sequence s_service;
+create sequence s_offer;
 
-alter sequence s_service owner to postgres;
+alter sequence s_offer owner to postgres;
 
 create sequence s_term;
 
@@ -74,13 +74,13 @@ create unique index uk_business_oib
 create unique index uk_business_id
     on business (id);
 
-create table service
+create table offer
 (
     id          bigint       not null
-        constraint pk_service_id
+        constraint pk_offer_id
             primary key,
     business_id bigint      not null
-        constraint fk_service_business_id
+        constraint fk_offer_business_id
             references business
             on delete cascade,
     name        varchar(256)    not null,
@@ -90,14 +90,14 @@ create table service
     duration    varchar(32)
 );
 
-alter table service
+alter table offer
     owner to postgres;
 
-create unique index uk_service_business_id_name
-    on service (business_id, name);
+create unique index uk_offer_business_id_name
+    on offer (business_id, name);
 
-create unique index uk_service_id
-    on service (id);
+create unique index uk_offer_id
+    on offer (id);
 
 create table "user"
 (
@@ -124,9 +124,9 @@ create table term
     id          bigint          not null
         constraint pk_term_id
             primary key,
-    service_id  bigint          not null
-        constraint fk_term_service_id
-            references service
+    offer_id  bigint          not null
+        constraint fk_term_offer_id
+            references offer
             on delete cascade,
     user_id     bigint          not null
         constraint fk_term_user_id
