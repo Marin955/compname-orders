@@ -36,4 +36,6 @@ public class CreateBusinessRequest extends BasicEntity {
         this.geolocation = geolocation;
         this.minInterval = minInterval;
     }
+
+
 }

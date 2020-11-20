@@ -1,13 +1,13 @@
-package com.compname.orders.api.message.response.user;
+package com.compname.orders.api.message.response.account;
 
 import com.compname.orders.api.message.request.ApiRequest;
 import com.compname.orders.api.message.response.ApiPayloadResponse;
-import com.compname.orders.api.model.user.User;
-import com.compname.orders.api.model.user.UserFacade;
+import com.compname.orders.api.model.account.Account;
+import com.compname.orders.api.model.account.AccountFacade;
 import com.compname.orders.utility.ResponseCode;
 
-public class UpdateUserResponse extends ApiPayloadResponse<User> implements UserFacade {
-    public UpdateUserResponse(ApiRequest request, ResponseCode responseCode, User payload) {
+public class UpdateAccountResponse extends ApiPayloadResponse<Account> implements AccountFacade {
+    public UpdateAccountResponse(ApiRequest request, ResponseCode responseCode, Account payload) {
         super(request, responseCode, payload);
     }
 

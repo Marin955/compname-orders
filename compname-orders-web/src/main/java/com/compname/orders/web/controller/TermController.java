@@ -74,7 +74,7 @@ public class TermController {
             @RequestHeader("channel") String channel,
             @RequestHeader("user") String user,
             @RequestParam(value = "offerId", required = false) Long offerId,
-            @RequestParam(value = "userId", required = false) Long userId,
+            @RequestParam(value = "accountId", required = false) Long accountId,
             @RequestParam(value = "from", required = false) ZonedDateTime from,
             @RequestParam(value = "to", required = false) ZonedDateTime to,
             @RequestParam(value = "pageSize", required = false) Integer pageSize,
@@ -86,7 +86,7 @@ public class TermController {
         request.setChannel(channel);
         request.setUser(user);
         request.setOfferId(offerId);
-        request.setUserId(userId);
+        request.setAccountId(accountId);
         request.setFrom(from);
         request.setTo(to);
         request.setPageSize(pageSize);

@@ -1,5 +1,6 @@
 package com.compname.orders.core.persistence.model;
 
+import com.compname.orders.core.persistence.DbEntity;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -14,7 +15,7 @@ import java.util.Set;
 @Entity
 @Table(name = "city")
 @SequenceGenerator(name = DbCity.SEQUENCE_NAME, sequenceName = DbCity.SEQUENCE_NAME, allocationSize = 1)
-public class DbCity {
+public class DbCity extends DbEntity<Long> {
 
     public static final String SEQUENCE_NAME = "s_city";
 
@@ -27,7 +28,7 @@ public class DbCity {
     private String name;
 
     @Column(name = "postal_code")
-    private String postalCode;
+    private Integer postalCode;
 
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "city")
     private Set<DbBusiness> businesses = new HashSet<>();

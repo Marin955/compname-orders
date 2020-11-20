@@ -1,5 +1,6 @@
 package com.compname.orders.core.persistence.model;
 
+import com.compname.orders.core.persistence.DbEntity;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -13,11 +14,11 @@ import java.util.Set;
 @Setter
 @Getter
 @Entity
-@Table(name = "user")
-@SequenceGenerator(name = DbUser.SEQUENCE_NAME, sequenceName = DbUser.SEQUENCE_NAME, allocationSize = 1)
-public class DbUser {
+@Table(name = "account")
+@SequenceGenerator(name = DbAccount.SEQUENCE_NAME, sequenceName = DbAccount.SEQUENCE_NAME, allocationSize = 1)
+public class DbAccount extends DbEntity<Long> {
 
-    public static final String SEQUENCE_NAME = "s_users";
+    public static final String SEQUENCE_NAME = "s_accounts";
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = SEQUENCE_NAME)
@@ -42,11 +43,11 @@ public class DbUser {
     @Column(name = "phone")
     private String phone;
 
-    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "user")
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "account")
     private Set<DbTerm> terms = new HashSet<>();
 
     @Column(name = "strikes")
     private Integer strikes;
 
-    public DbUser(Long id) { this.id = id; }
+    public DbAccount(Long id) { this.id = id; }
 }

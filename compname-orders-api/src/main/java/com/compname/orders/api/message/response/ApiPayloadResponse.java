@@ -12,7 +12,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @Setter
 @Getter
-public abstract class ApiPayloadResponse<T extends ApiEntity> extends ApiResponse {
+public abstract class ApiPayloadResponse<T> extends ApiResponse {
     private T payload;
 
     public ApiPayloadResponse(ApiRequest request, ResponseCode responseCode, T payload) {

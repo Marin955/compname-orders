@@ -1,4 +1,4 @@
-package com.compname.orders.api.message.request.user;
+package com.compname.orders.api.message.request.account;
 
 import com.compname.orders.api.message.request.ApiIdRequest;
 import lombok.AllArgsConstructor;
@@ -10,7 +10,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @Getter
 @Setter
-public class UpdateUserRequest extends ApiIdRequest {
+public class UpdateAccountRequest extends ApiIdRequest {
 
     private String firstName;
     private String lastName;
@@ -19,7 +19,7 @@ public class UpdateUserRequest extends ApiIdRequest {
     private String phone;
     private Integer strikes;
 
-    public UpdateUserRequest(Long id, String firstName, String lastName, String mail, String password, String phone, Integer strikes) {
+    public UpdateAccountRequest(Long id, String firstName, String lastName, String mail, String password, String phone, Integer strikes) {
         super(id);
         this.firstName = firstName;
         this.lastName = lastName;

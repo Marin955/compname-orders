@@ -30,7 +30,7 @@ create table city
         constraint pk_city_id
             primary key,
     name                    varchar(256) not null,
-    postal_code             varchar(16)
+    postal_code             int
 );
 
 alter table city
@@ -38,9 +38,6 @@ alter table city
 
 create unique index uk_city_name
     on city (name);
-
-create unique index uk_postal_code
-    on city (postal_code);
 
 create table business
 (

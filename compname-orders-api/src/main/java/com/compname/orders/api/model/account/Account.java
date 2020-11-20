@@ -1,4 +1,4 @@
-package com.compname.orders.api.model.user;
+package com.compname.orders.api.model.account;
 
 import com.compname.orders.api.model.ApiIdEntity;
 import lombok.AllArgsConstructor;
@@ -10,7 +10,7 @@ import java.time.ZonedDateTime;
 @AllArgsConstructor
 @Getter
 @Setter
-public class User extends ApiIdEntity {
+public class Account extends ApiIdEntity {
     private ZonedDateTime created;
     private String firstName;
     private String lastName;
@@ -19,7 +19,7 @@ public class User extends ApiIdEntity {
     private String phone;
     private Integer strikes;
 
-    public User(Long id, ZonedDateTime created, String firstName, String lastName, String mail, String password, String phone, Integer strikes) {
+    public Account(Long id, ZonedDateTime created, String firstName, String lastName, String mail, String password, String phone, Integer strikes) {
         super(id);
         this.created = created;
         this.firstName = firstName;

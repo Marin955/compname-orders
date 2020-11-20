@@ -1,18 +1,19 @@
 package com.compname.orders.core.internal.model;
 
-import com.compname.orders.api.model.user.User;
+import com.compname.orders.api.message.request.account.UpdateAccountRequest;
+import com.compname.orders.api.model.account.Account;
 import com.compname.orders.core.internal.common.ApiConvertible;
 import com.compname.orders.core.internal.common.Deletable;
 import com.compname.orders.core.internal.common.InternalIdEntity;
-import com.compname.orders.core.internal.common.Updateable;
+import com.compname.orders.core.internal.common.Updatable;
 
 import java.time.ZonedDateTime;
 
-public interface InternalUser extends
+public interface InternalAccount extends
         InternalIdEntity,
-        ApiConvertible<User>,
-        Deletable<InternalUser>,
-        Updateable<InternalBusiness> {
+        ApiConvertible<Account>,
+        Deletable<InternalAccount>,
+        Updatable<InternalAccount, UpdateAccountRequest> {
 
     ZonedDateTime getCreated();
     String getFirstName();

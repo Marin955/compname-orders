@@ -3,6 +3,7 @@ package com.compname.orders.core.validation;
 import com.compname.orders.api.message.request.business.*;
 import org.springframework.stereotype.Service;
 
+import java.time.ZonedDateTime;
 import java.util.Objects;
 
 @Service
@@ -22,7 +23,9 @@ public class BusinessRequestValidator extends AbstractRequestValidator {
         validateBaseRequest(request);
 
         notEmpty(request.getName(), NAME);
-        notNull(request.getCreated(), CREATED);
+        if (Objects.isNull(request.getCreated())) {
+            request.setCreated(ZonedDateTime.now());
+        }
         notEmpty(request.getCreatedBy(), CREATED_BY);
         notNull(request.getOib(), OIB);
         notEmpty(request.getAddress().getAddress(), ADDRESS);

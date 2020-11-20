@@ -1,28 +1,26 @@
 package com.compname.orders.web.controller;
 
-import com.compname.orders.api.message.request.user.*;
-import com.compname.orders.api.message.response.user.*;
-import com.compname.orders.core.peer.UserPeer;
+import com.compname.orders.api.message.request.account.*;
+import com.compname.orders.api.message.response.account.*;
+import com.compname.orders.core.peer.AccountPeer;
 import com.compname.orders.utility.OrdersServiceException;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.ZonedDateTime;
-
 @AllArgsConstructor
-@RequestMapping("/user")
+@RequestMapping("/account")
 @RestController
-public class UserController {
+public class AccountController {
 
-    private final UserPeer peer;
+    private final AccountPeer peer;
 
     @PostMapping
     public @ResponseBody
-    CreateUserResponse create(
+    CreateAccountResponse create(
             @RequestHeader("providerId") Long providerId,
             @RequestHeader("channel") String channel,
             @RequestHeader("user") String user,
-            @RequestBody CreateUserRequest request
+            @RequestBody CreateAccountRequest request
     ) throws OrdersServiceException {
         request.setProviderId(providerId);
         request.setChannel(channel);
@@ -33,13 +31,13 @@ public class UserController {
 
     @GetMapping("/{id}")
     public @ResponseBody
-    GetUserResponse get(
+    GetAccountResponse get(
             @RequestHeader("providerId") Long providerId,
             @RequestHeader("channel") String channel,
             @RequestHeader("user") String user,
             @PathVariable("id") Long id
     ) throws OrdersServiceException {
-        GetUserRequest request = new GetUserRequest();
+        GetAccountRequest request = new GetAccountRequest();
 
         request.setProviderId(providerId);
         request.setChannel(channel);
@@ -51,13 +49,13 @@ public class UserController {
 
     @DeleteMapping("/{id}")
     public @ResponseBody
-    DeleteUserResponse delete(
+    DeleteAccountResponse delete(
             @RequestHeader("providerId") Long providerId,
             @RequestHeader("channel") String channel,
             @RequestHeader("user") String user,
             @PathVariable("id") Long id
     ) throws OrdersServiceException {
-        DeleteUserRequest request = new DeleteUserRequest();
+        DeleteAccountRequest request = new DeleteAccountRequest();
 
         request.setProviderId(providerId);
         request.setChannel(channel);
@@ -69,7 +67,7 @@ public class UserController {
 
     @GetMapping
     public @ResponseBody
-    SearchUserResponse search(
+    SearchAccountResponse search(
             @RequestHeader("providerId") Long providerId,
             @RequestHeader("channel") String channel,
             @RequestHeader("user") String user,
@@ -80,7 +78,7 @@ public class UserController {
             @RequestParam(value = "pageSize", required = false) Integer pageSize,
             @RequestParam(value = "pageNumber", required = false) Integer pageNumber
     ) throws OrdersServiceException {
-        SearchUserRequest request = new SearchUserRequest();
+        SearchAccountRequest request = new SearchAccountRequest();
 
         request.setProviderId(providerId);
         request.setChannel(channel);
@@ -97,12 +95,12 @@ public class UserController {
 
     @PutMapping("/{id}")
     public @ResponseBody
-    UpdateUserResponse update(
+    UpdateAccountResponse update(
             @RequestHeader("providerId") Long providerId,
             @RequestHeader("channel") String channel,
             @RequestHeader("user") String user,
             @PathVariable("id") Long id,
-            @RequestBody UpdateUserRequest request
+            @RequestBody UpdateAccountRequest request
     ) throws OrdersServiceException {
         request.setProviderId(providerId);
         request.setChannel(channel);

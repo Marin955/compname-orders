@@ -1,5 +1,6 @@
 package com.compname.orders.core.persistence.model;
 
+import com.compname.orders.core.persistence.DbEntity;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -13,7 +14,7 @@ import java.time.ZonedDateTime;
 @Entity
 @Table(name = "term")
 @SequenceGenerator(name = DbTerm.SEQUENCE_NAME, sequenceName = DbTerm.SEQUENCE_NAME, allocationSize = 1)
-public class DbTerm {
+public class DbTerm extends DbEntity<Long> {
 
     public static final String SEQUENCE_NAME = "s_term";
 
@@ -27,8 +28,8 @@ public class DbTerm {
     private DbOffer offer;
 
     @ManyToOne
-    @JoinColumn(name = "user_id", nullable = false)
-    private DbUser user;
+    @JoinColumn(name = "account_id", nullable = false)
+    private DbAccount account;
 
     @Column(name = "from")
     private ZonedDateTime from;

@@ -1,25 +1,25 @@
 package com.compname.orders.core.validation;
 
-import com.compname.orders.api.message.request.user.*;
+import com.compname.orders.api.message.request.account.*;
 import org.springframework.stereotype.Service;
 
 @Service
-public class UserRequestValidator extends AbstractRequestValidator {
+public class AccountRequestValidator extends AbstractRequestValidator {
 
     private static final String FIRST_NAME = "first name";
     private static final String LAST_NAME = "last name";
     private static final String PHONE = "phone";
     private static final String PASSWORD = "password";
 
-    public Long validate(GetUserRequest request) {
+    public Long validate(GetAccountRequest request) {
         return validateIdRequest(request);
     }
 
-    public Long validate(DeleteUserRequest request) {
+    public Long validate(DeleteAccountRequest request) {
         return validateIdRequest(request);
     }
 
-    public CreateUserRequest validate(CreateUserRequest request) {
+    public CreateAccountRequest validate(CreateAccountRequest request) {
         validateBaseRequest(request);
 
         notEmpty(request.getFirstName(), FIRST_NAME);
@@ -30,11 +30,11 @@ public class UserRequestValidator extends AbstractRequestValidator {
         return request;
     }
 
-    public SearchUserRequest validate(SearchUserRequest request) {
+    public SearchAccountRequest validate(SearchAccountRequest request) {
         return validatePaginationRequest(request);
     }
 
-    public UpdateUserRequest validate(UpdateUserRequest request) {
+    public UpdateAccountRequest validate(UpdateAccountRequest request) {
         validateIdRequest(request);
         return request;
     }

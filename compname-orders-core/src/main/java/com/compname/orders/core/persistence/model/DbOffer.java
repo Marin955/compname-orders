@@ -1,5 +1,6 @@
 package com.compname.orders.core.persistence.model;
 
+import com.compname.orders.core.persistence.DbEntity;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -15,7 +16,7 @@ import java.util.Set;
 @Entity
 @Table(name = "offer")
 @SequenceGenerator(name = DbOffer.SEQUENCE_NAME, sequenceName = DbOffer.SEQUENCE_NAME, allocationSize = 1)
-public class DbOffer {
+public class DbOffer extends DbEntity<Long> {
 
     public static final String SEQUENCE_NAME = "s_offer";
 

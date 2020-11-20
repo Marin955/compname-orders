@@ -1,6 +1,6 @@
-package com.compname.orders.api.model.user;
+package com.compname.orders.api.model.account;
 
-public interface UserFacade {
+public interface AccountFacade {
     void setFirstName(String firstName);
     void setLastName(String lastName);
     void setMail(String mail);

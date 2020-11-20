@@ -10,6 +10,7 @@ import com.compname.orders.api.message.response.city.DeleteCityResponse;
 import com.compname.orders.api.message.response.city.GetCityResponse;
 import com.compname.orders.api.message.response.city.SearchCityResponse;
 import com.compname.orders.api.message.response.city.UpdateCityResponse;
+import com.compname.orders.core.peer.CityPeer;
 import com.compname.orders.utility.OrdersServiceException;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.DeleteMapping;
