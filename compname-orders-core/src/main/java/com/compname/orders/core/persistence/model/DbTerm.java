@@ -38,4 +38,36 @@ public class DbTerm extends DbEntity<Long> {
     private ZonedDateTime to;
 
     public DbTerm(Long id) { this.id = id; }
+
+    public enum DbTermMapping
+    {
+        ID("id", "id"),
+        OFFER_ID("offer", "offer_id"),
+        ACCOUNT_ID("account", "account_id");
+
+        private final String field;
+        private final String column;
+
+        DbTermMapping(String field, String column)
+        {
+            this.field = field;
+            this.column = column;
+        }
+
+        public String getField()
+        {
+            return this.field;
+        }
+
+        public String getColumn()
+        {
+            return this.column;
+        }
+
+        @Override
+        public String toString()
+        {
+            return String.format("%s::[field=%s, column=%s]", name(), getField(), getColumn());
+        }
+    }
 }

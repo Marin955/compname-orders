@@ -50,4 +50,36 @@ public class DbAccount extends DbEntity<Long> {
     private Integer strikes;
 
     public DbAccount(Long id) { this.id = id; }
+
+    public enum DbAccountMapping
+    {
+        ID("id", "id"),
+        FIRST_NAME("firstName", "first_name"),
+        LAST_NAME("lastName", "last_name");
+
+        private final String field;
+        private final String column;
+
+        DbAccountMapping(String field, String column)
+        {
+            this.field = field;
+            this.column = column;
+        }
+
+        public String getField()
+        {
+            return this.field;
+        }
+
+        public String getColumn()
+        {
+            return this.column;
+        }
+
+        @Override
+        public String toString()
+        {
+            return String.format("%s::[field=%s, column=%s]", name(), getField(), getColumn());
+        }
+    }
 }

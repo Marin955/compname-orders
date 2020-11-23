@@ -34,4 +34,36 @@ public class DbCity extends DbEntity<Long> {
     private Set<DbBusiness> businesses = new HashSet<>();
 
     public DbCity(Long id) { this.id = id; }
+
+    public enum DbCityMapping
+    {
+        ID("id", "id"),
+        NAME("name", "name"),
+        POSTAL_CODE("postalCode", "postal_code");
+
+        private final String field;
+        private final String column;
+
+        DbCityMapping(String field, String column)
+        {
+            this.field = field;
+            this.column = column;
+        }
+
+        public String getField()
+        {
+            return this.field;
+        }
+
+        public String getColumn()
+        {
+            return this.column;
+        }
+
+        @Override
+        public String toString()
+        {
+            return String.format("%s::[field=%s, column=%s]", name(), getField(), getColumn());
+        }
+    }
 }

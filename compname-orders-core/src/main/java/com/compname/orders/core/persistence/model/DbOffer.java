@@ -48,4 +48,37 @@ public class DbOffer extends DbEntity<Long> {
     private Set<DbTerm> terms = new HashSet<>();
 
     public DbOffer(Long id) { this.id = id; }
+
+    public enum DbOfferMapping
+    {
+        ID("id", "id"),
+        NAME("name", "name"),
+        PRICE("price", "price"),
+        DURATION("duration", "duration");
+
+        private final String field;
+        private final String column;
+
+        DbOfferMapping(String field, String column)
+        {
+            this.field = field;
+            this.column = column;
+        }
+
+        public String getField()
+        {
+            return this.field;
+        }
+
+        public String getColumn()
+        {
+            return this.column;
+        }
+
+        @Override
+        public String toString()
+        {
+            return String.format("%s::[field=%s, column=%s]", name(), getField(), getColumn());
+        }
+    }
 }

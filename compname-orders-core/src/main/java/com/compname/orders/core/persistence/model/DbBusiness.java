@@ -72,4 +72,41 @@ public class DbBusiness extends DbEntity<Long> {
     public DbBusiness(Long id) {
         this.id = id;
     }
+
+    /**
+     * The enum DbBusiness mapping.
+     */
+    public enum DbBusinessMapping
+    {
+
+        ID("id", "id"),
+        NAME("name", "name"),
+        CITY_ID("cityId", "city_id"),
+        OIB("oib", "oib");
+
+        private final String field;
+        private final String column;
+
+        DbBusinessMapping(String field, String column)
+        {
+            this.field = field;
+            this.column = column;
+        }
+
+        public String getField()
+        {
+            return this.field;
+        }
+
+        public String getColumn()
+        {
+            return this.column;
+        }
+
+        @Override
+        public String toString()
+        {
+            return String.format("%s::[field=%s, column=%s]", name(), getField(), getColumn());
+        }
+    }
 }

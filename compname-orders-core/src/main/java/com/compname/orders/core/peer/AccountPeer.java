@@ -2,7 +2,9 @@ package com.compname.orders.core.peer;
 
 import com.compname.orders.api.message.request.account.*;
 import com.compname.orders.api.message.response.account.*;
+import com.compname.orders.api.model.account.Account;
 import com.compname.orders.api.service.AccountService;
+import com.compname.orders.core.internal.service.InternalOrderService;
 import com.compname.orders.core.validation.AccountRequestValidator;
 import com.compname.orders.utility.OrdersServiceException;
 import com.compname.orders.utility.ResponseCode;
@@ -17,6 +19,7 @@ import javax.transaction.Transactional;
 public class AccountPeer implements AccountService {
 
     private final AccountRequestValidator validator;
+    private final InternalOrderService service;
 
     @Override
     public CreateAccountResponse create(CreateAccountRequest request) {
@@ -25,7 +28,8 @@ public class AccountPeer implements AccountService {
         } catch (OrdersServiceException exception) {
             return new CreateAccountResponse(request, ResponseCode.REQUEST_INVALID, null);
         }
-        return new CreateAccountResponse(request, ResponseCode.OK, null);
+        Account account = service.create(request).toApi();
+        return new CreateAccountResponse(request, ResponseCode.OK, account);
     }
 
     @Override

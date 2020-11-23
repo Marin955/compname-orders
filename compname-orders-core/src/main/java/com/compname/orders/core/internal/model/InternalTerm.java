@@ -15,7 +15,7 @@ public interface InternalTerm extends
         Deletable<InternalTerm>,
         Updatable<InternalTerm, UpdateTermRequest> {
 
-    Long getServiceId();
+    Long getOfferId();
     Long getAccountId();
     ZonedDateTime getFrom();
     ZonedDateTime getTo();

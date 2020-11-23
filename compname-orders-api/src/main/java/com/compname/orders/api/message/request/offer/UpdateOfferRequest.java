@@ -11,7 +11,6 @@ import lombok.Setter;
 @Getter
 @Setter
 public class UpdateOfferRequest extends ApiPaginationRequest {
-    private Long businessId;
     private String name;
     private Float price;
     private String duration;

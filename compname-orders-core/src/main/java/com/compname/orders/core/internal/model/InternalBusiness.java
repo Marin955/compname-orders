@@ -22,4 +22,5 @@ public interface InternalBusiness extends
     ContactInfo getContactInfo();
     Geolocation getGeolocation();
     String getMinInterval();
+    Float getRating();
 }
