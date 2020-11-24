@@ -47,11 +47,16 @@ public class BusinessPeer implements BusinessService {
     @Override
     public GetBusinessResponse get(GetBusinessRequest request) throws OrdersServiceException
     {
-        Long id;
-        try{ id = validator.validate(request); } catch (OrdersServiceException exception) {
+        Business business;
+        try{
+            validator.validate(request);
+            business = service.getBusinessBy(request.getId()).toApi();
+        } catch (OrdersServiceException exception) {
             return new GetBusinessResponse(request, ResponseCode.REQUEST_INVALID, null);
         }
-        Business business = service.getBusinessBy(id).toApi();
+        catch (NullPointerException nullPointerException) {
+            return new GetBusinessResponse(request, ResponseCode.ENTITY_NOT_FOUND, null);
+        }
         return new GetBusinessResponse(request, ResponseCode.OK, business);
     }
 

@@ -43,7 +43,9 @@ public class DbTerm extends DbEntity<Long> {
     {
         ID("id", "id"),
         OFFER_ID("offer", "offer_id"),
-        ACCOUNT_ID("account", "account_id");
+        ACCOUNT_ID("account", "account_id"),
+        FROM("from", "from"),
+        TO("to", "to");
 
         private final String field;
         private final String column;

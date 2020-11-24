@@ -45,11 +45,15 @@ public class CityPeer implements CityService {
     @Override
     public GetCityResponse get(GetCityRequest request) throws OrdersServiceException
     {
-        Long id;
-        try{ id = validator.validate(request); } catch (OrdersServiceException exception) {
+        City city;
+        try{
+            validator.validate(request);
+            city = service.getCityBy(request.getId()).toApi();
+        } catch (OrdersServiceException exception) {
             return new GetCityResponse(request, ResponseCode.REQUEST_INVALID, null);
+        } catch (NullPointerException nullPointerException) {
+            return new GetCityResponse(request, ResponseCode.ENTITY_NOT_FOUND, null);
         }
-        City city = service.getCityBy(id).toApi();
         return new GetCityResponse(request, ResponseCode.OK, city);
     }
 
@@ -61,7 +65,7 @@ public class CityPeer implements CityService {
             return new DeleteCityResponse(request, ResponseCode.REQUEST_INVALID, null);
         }
         City city = service.getCityBy(id).delete().toApi();
-        return new DeleteCityResponse(request, ResponseCode.OK, null);
+        return new DeleteCityResponse(request, ResponseCode.OK, city);
     }
 
     @Override

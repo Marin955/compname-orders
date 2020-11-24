@@ -1,6 +1,7 @@
 package com.compname.orders.api.message.request.account;
 
 import com.compname.orders.api.message.request.ApiIdRequest;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -12,6 +13,7 @@ import java.time.ZonedDateTime;
 @Setter
 public class CreateAccountRequest extends ApiIdRequest {
 
+    @JsonIgnore
     private ZonedDateTime created;
     private String firstName;
     private String lastName;

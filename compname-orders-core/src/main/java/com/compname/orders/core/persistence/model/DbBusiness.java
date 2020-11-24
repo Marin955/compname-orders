@@ -81,7 +81,7 @@ public class DbBusiness extends DbEntity<Long> {
 
         ID("id", "id"),
         NAME("name", "name"),
-        CITY_ID("cityId", "city_id"),
+        CITY_ID("city", "city_id"),
         OIB("oib", "oib");
 
         private final String field;

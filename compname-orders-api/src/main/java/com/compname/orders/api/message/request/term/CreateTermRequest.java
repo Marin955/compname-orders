@@ -14,6 +14,7 @@ import java.time.ZonedDateTime;
 @Getter
 public class CreateTermRequest extends ApiIdRequest {
 
+    //TODO created field
     private Long offerId;
     private Long accountId;
     private ZonedDateTime from;

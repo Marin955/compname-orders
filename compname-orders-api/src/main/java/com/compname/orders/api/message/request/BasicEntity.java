@@ -1,5 +1,6 @@
 package com.compname.orders.api.message.request;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -12,6 +13,7 @@ import java.time.ZonedDateTime;
 public abstract class BasicEntity extends ApiIdRequest {
 
     private String name;
+    @JsonIgnore
     private ZonedDateTime created;
     private String createdBy;
 

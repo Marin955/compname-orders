@@ -55,7 +55,9 @@ public class DbAccount extends DbEntity<Long> {
     {
         ID("id", "id"),
         FIRST_NAME("firstName", "first_name"),
-        LAST_NAME("lastName", "last_name");
+        LAST_NAME("lastName", "last_name"),
+        PHONE("phone", "phone"),
+        STRIKES("strikes", "strikes");
 
         private final String field;
         private final String column;

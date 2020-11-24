@@ -52,6 +52,7 @@ public class DbOffer extends DbEntity<Long> {
     public enum DbOfferMapping
     {
         ID("id", "id"),
+        BUSINESS("business", "business_id"),
         NAME("name", "name"),
         PRICE("price", "price"),
         DURATION("duration", "duration");

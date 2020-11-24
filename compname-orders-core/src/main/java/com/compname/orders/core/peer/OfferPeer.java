@@ -35,11 +35,15 @@ public class OfferPeer implements OfferService {
 
     @Override
     public GetOfferResponse get(GetOfferRequest request) {
-        Long id;
-        try{ id = validator.validate(request); } catch (OrdersServiceException exception) {
+        Offer offer;
+        try{
+            validator.validate(request);
+            offer = service.getOfferBy(request.getId()).toApi();
+        } catch (OrdersServiceException exception) {
             return new GetOfferResponse(request, ResponseCode.REQUEST_INVALID, null);
+        } catch (NullPointerException nullPointerException) {
+            return new GetOfferResponse(request, ResponseCode.ENTITY_NOT_FOUND, null);
         }
-        Offer offer = service.getOfferBy(id).toApi();
         return new GetOfferResponse(request, ResponseCode.OK, offer);
     }
 
