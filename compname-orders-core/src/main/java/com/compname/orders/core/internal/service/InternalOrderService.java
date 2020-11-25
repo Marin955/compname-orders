@@ -95,38 +95,37 @@ public class InternalOrderService {
 
     public List<InternalBusiness> search(SearchBusinessRequest request)
     {
-        return businessRepo
-                .findAll(
-                        (Specification<DbBusiness>)
-                                (root, criteriaQuery, criteriaBuilder) -> {
-                                    List<Predicate> predicates = new ArrayList<>();
+    return businessRepo
+        .findAll(
+            (Specification<DbBusiness>)
+                (root, criteriaQuery, criteriaBuilder) -> {
+                  List<Predicate> predicates = new ArrayList<>();
 
-                                    if (Objects.nonNull(request.getName())) {
-                                        predicates.add(
-                                                criteriaBuilder.equal(
-                                                        root.get(DbBusiness.DbBusinessMapping.NAME.getField()),
-                                                        request.getName()));
-                                    }
-                                    if (Objects.nonNull(request.getOib())) {
-                                        predicates.add(
-                                                criteriaBuilder.equal(
-                                                        root.get(DbBusiness.DbBusinessMapping.OIB.getField()),
-                                                        request.getOib()));
-                                    }
-                                    if (Objects.nonNull(request.getCity())) {
-                                        predicates.add(
-                                                criteriaBuilder.equal(
-                                                        //TODO properly
-                                                        root.join(DbBusiness.DbBusinessMapping.CITY_ID.getField())
-                                                                .get(DbCity.DbCityMapping.ID.getField()),
-                                                        cityRepo.findByName(request.getCity()).getId()));
-                                    }
-                                    return criteriaBuilder.and(predicates.toArray(new Predicate[0]));
-                                },
-                        PageRequest.of(request.getPageNumber(), request.getPageSize()))
-                .stream()
-                .map(this::toInternal)
-                .collect(Collectors.toList());
+                  if (Objects.nonNull(request.getName())) {
+                    predicates.add(
+                        criteriaBuilder.equal(
+                            root.get(DbBusiness.DbBusinessMapping.NAME.getField()),
+                            request.getName()));
+                  }
+                  if (Objects.nonNull(request.getOib())) {
+                    predicates.add(
+                        criteriaBuilder.equal(
+                            root.get(DbBusiness.DbBusinessMapping.OIB.getField()),
+                            request.getOib()));
+                  }
+                  if (Objects.nonNull(request.getCity())) {
+                    predicates.add(
+                        criteriaBuilder.equal(
+                            root.get(DbBusiness.DbBusinessMapping.CITY_ID.getField())
+                                .get(DbCity.DbCityMapping.ID.getField()),
+                            cityRepo.findByName(request.getCity()).getId()));
+                  }
+                  return criteriaBuilder.and(predicates.toArray(new Predicate[0]));
+                },
+            PageRequest.of(request.getPageNumber(), request.getPageSize()))
+        .stream()
+        .map(this::toInternal)
+        .collect(Collectors.toList());
     }
 
     public InternalOffer getOfferBy(Long id) {

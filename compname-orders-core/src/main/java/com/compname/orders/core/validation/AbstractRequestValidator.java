@@ -21,6 +21,7 @@ public abstract class AbstractRequestValidator
     private static final String UNKNOWN_CHANNEL = "UNKNOWN_CHANNEL";
     private static final Integer DEFAULT_PAGE_SIZE = 20;
     private static final Integer MINIMUM_PAGE_SIZE = 1;
+    private static final Integer MINIMUM_PAGE_NUMBER = 0;
     private static final Integer MAXIMUM_ENTITIES_PER_PAGE = 100;
 
     protected static final String NAME = "name";
@@ -112,7 +113,7 @@ public abstract class AbstractRequestValidator
         validateBaseRequest(request);
 
         if (!(Objects.isNull(request.getPageNumber()) || Objects.isNull(request.getPageSize()))) {
-            notLessThan(request.getPageNumber(), MINIMUM_PAGE_SIZE, "page number");
+            notLessThan(request.getPageNumber(), MINIMUM_PAGE_NUMBER, "page number");
             notLessThan(request.getPageSize(), MINIMUM_PAGE_SIZE, "page size");
             notGreaterThan(request.getPageSize(), MAXIMUM_ENTITIES_PER_PAGE, "page size");
         } else {
