@@ -7,6 +7,7 @@ import com.compname.orders.utility.OrdersServiceException;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.ZonedDateTime;
 import java.util.Objects;
 
 @AllArgsConstructor
@@ -26,6 +27,9 @@ public class OfferRequestValidator extends AbstractRequestValidator {
     public CreateOfferRequest validate(CreateOfferRequest request) {
         validateBaseRequest(request);
 
+        if (Objects.isNull(request.getCreated())) {
+            request.setCreated(ZonedDateTime.now());
+        }
         notEmpty(request.getName(), NAME);
         notEmpty(request.getCreatedBy(), CREATED_BY);
         notNull(request.getCreated(), CREATED);

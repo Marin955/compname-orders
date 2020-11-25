@@ -44,7 +44,7 @@ public class DbOffer extends DbEntity<Long> {
     @Column(name = "duration")
     private String duration;
 
-    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "offer")
+    @OneToMany(fetch = FetchType.EAGER, orphanRemoval = true, mappedBy = "offer")
     private Set<DbTerm> terms = new HashSet<>();
 
     public DbOffer(Long id) { this.id = id; }

@@ -31,10 +31,10 @@ public class DbTerm extends DbEntity<Long> {
     @JoinColumn(name = "account_id", nullable = false)
     private DbAccount account;
 
-    @Column(name = "from")
+    @Column(name = "from_time")
     private ZonedDateTime from;
 
-    @Column(name = "to")
+    @Column(name = "to_time")
     private ZonedDateTime to;
 
     public DbTerm(Long id) { this.id = id; }
@@ -44,8 +44,8 @@ public class DbTerm extends DbEntity<Long> {
         ID("id", "id"),
         OFFER_ID("offer", "offer_id"),
         ACCOUNT_ID("account", "account_id"),
-        FROM("from", "from"),
-        TO("to", "to");
+        FROM("from", "from_time"),
+        TO("to", "to_time");
 
         private final String field;
         private final String column;

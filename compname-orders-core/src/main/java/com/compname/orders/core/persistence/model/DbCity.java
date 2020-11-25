@@ -30,7 +30,7 @@ public class DbCity extends DbEntity<Long> {
     @Column(name = "postal_code")
     private Integer postalCode;
 
-    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "city")
+    @OneToMany(fetch = FetchType.EAGER, orphanRemoval = true, mappedBy = "city")
     private Set<DbBusiness> businesses = new HashSet<>();
 
     public DbCity(Long id) { this.id = id; }

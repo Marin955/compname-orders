@@ -43,7 +43,7 @@ public class DbAccount extends DbEntity<Long> {
     @Column(name = "phone")
     private String phone;
 
-    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "account")
+    @OneToMany(fetch = FetchType.EAGER, orphanRemoval = true, mappedBy = "account")
     private Set<DbTerm> terms = new HashSet<>();
 
     @Column(name = "strikes")

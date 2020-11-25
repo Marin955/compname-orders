@@ -9,6 +9,7 @@ import com.compname.orders.core.internal.service.InternalOrderService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.ZonedDateTime;
 import java.util.Objects;
 
 @AllArgsConstructor
@@ -33,6 +34,9 @@ public class AccountRequestValidator extends AbstractRequestValidator {
     public CreateAccountRequest validate(CreateAccountRequest request) {
         validateBaseRequest(request);
 
+        if (Objects.isNull(request.getCreated())) {
+            request.setCreated(ZonedDateTime.now());
+        }
         notEmpty(request.getFirstName(), FIRST_NAME);
         notEmpty(request.getLastName(), LAST_NAME);
         notEmpty(request.getPassword(), PASSWORD);

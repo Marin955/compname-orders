@@ -148,26 +148,30 @@ public class InternalOrderService {
 
     public List<InternalOffer> search(SearchOfferRequest request)
     {
-        return offerRepo.findAll(
-                ((Specification<DbOffer>)
-                        (root, criteriaQuery, criteriaBuilder) -> {
-                            List<Predicate> predicates = new ArrayList<>();
+    return offerRepo
+        .findAll(
+            ((Specification<DbOffer>)
+                (root, criteriaQuery, criteriaBuilder) -> {
+                  List<Predicate> predicates = new ArrayList<>();
 
-                            if (Objects.nonNull(request.getBusinessId())) {
-                                predicates.add(
-                                        criteriaBuilder.equal(
-                                                root.get(DbOffer.DbOfferMapping.BUSINESS.getField()),
-                                                request.getBusinessId()));
-                            }
-                            if (Objects.nonNull(request.getName())) {
-                                predicates.add(
-                                        criteriaBuilder.equal(
-                                                root.get(DbOffer.DbOfferMapping.NAME.getField()),
-                                                request.getName()));
-                            }
-                            return criteriaBuilder.and(predicates.toArray(new Predicate[0]));
-
-        })).stream().map(this::toInternal).collect(Collectors.toList());
+                  if (Objects.nonNull(request.getBusinessId())) {
+                    predicates.add(
+                        criteriaBuilder.equal(
+                            root.get(DbOffer.DbOfferMapping.BUSINESS.getField())
+                                .get(DbBusiness.DbBusinessMapping.ID.getField()),
+                            request.getBusinessId()));
+                  }
+                  if (Objects.nonNull(request.getName())) {
+                    predicates.add(
+                        criteriaBuilder.equal(
+                            root.get(DbOffer.DbOfferMapping.NAME.getField()), request.getName()));
+                  }
+                  return criteriaBuilder.and(predicates.toArray(new Predicate[0]));
+                }),
+            PageRequest.of(request.getPageNumber(), request.getPageSize()))
+        .stream()
+        .map(this::toInternal)
+        .collect(Collectors.toList());
     }
 
     public InternalCity getCityBy(Long id) {
@@ -189,26 +193,29 @@ public class InternalOrderService {
     }
 
     public List<InternalCity> search(SearchCityRequest request) {
-        return cityRepo.findAll(
-                ((Specification<DbCity>)
-                        (root, criteriaQuery, criteriaBuilder) -> {
-                            List<Predicate> predicates = new ArrayList<>();
+    return cityRepo
+        .findAll(
+            ((Specification<DbCity>)
+                (root, criteriaQuery, criteriaBuilder) -> {
+                  List<Predicate> predicates = new ArrayList<>();
 
-                            if (Objects.nonNull(request.getName())) {
-                                predicates.add(
-                                        criteriaBuilder.equal(
-                                                root.get(DbCity.DbCityMapping.NAME.getField()),
-                                                request.getName()));
-                            }
-                            if (Objects.nonNull(request.getPostalCode())) {
-                                predicates.add(
-                                        criteriaBuilder.equal(
-                                                root.get(DbCity.DbCityMapping.POSTAL_CODE.getField()),
-                                                request.getPostalCode()));
-                            }
-                            return criteriaBuilder.and(predicates.toArray(new Predicate[0]));
-                        })
-        ).stream().map(this::toInternal).collect(Collectors.toList());
+                  if (Objects.nonNull(request.getName())) {
+                    predicates.add(
+                        criteriaBuilder.equal(
+                            root.get(DbCity.DbCityMapping.NAME.getField()), request.getName()));
+                  }
+                  if (Objects.nonNull(request.getPostalCode())) {
+                    predicates.add(
+                        criteriaBuilder.equal(
+                            root.get(DbCity.DbCityMapping.POSTAL_CODE.getField()),
+                            request.getPostalCode()));
+                  }
+                  return criteriaBuilder.and(predicates.toArray(new Predicate[0]));
+                }),
+            PageRequest.of(request.getPageNumber(), request.getPageSize()))
+        .stream()
+        .map(this::toInternal)
+        .collect(Collectors.toList());
     }
 
     public InternalAccount getAccountBy(Long id) {
@@ -231,37 +238,42 @@ public class InternalOrderService {
     }
 
     public List<InternalAccount> search(SearchAccountRequest request) {
-        return accountRepo.findAll(
-                ((Specification<DbAccount>)(root, criteriaQuery, criteriaBuilder) -> {
-                    List<Predicate> predicates = new ArrayList<>();
+    return accountRepo
+        .findAll(
+            ((Specification<DbAccount>)
+                (root, criteriaQuery, criteriaBuilder) -> {
+                  List<Predicate> predicates = new ArrayList<>();
 
-                    if (Objects.nonNull(request.getFirstName())) {
-                        predicates.add(
-                                criteriaBuilder.equal(
-                                        root.get(DbAccount.DbAccountMapping.FIRST_NAME.getField()),
-                                        request.getFirstName()));
-                    }
-                    if (Objects.nonNull(request.getLastName())) {
-                        predicates.add(
-                                criteriaBuilder.equal(
-                                        root.get(DbAccount.DbAccountMapping.LAST_NAME.getField()),
-                                        request.getLastName()));
-                    }
-                    if (Objects.nonNull(request.getPhone())) {
-                        predicates.add(
-                                criteriaBuilder.equal(
-                                        root.get(DbAccount.DbAccountMapping.PHONE.getField()),
-                                        request.getPhone()));
-                    }
-                    if (Objects.nonNull(request.getStrikes())) {
-                        predicates.add(
-                                criteriaBuilder.equal(
-                                        root.get(DbAccount.DbAccountMapping.STRIKES.getField()),
-                                        request.getStrikes()));
-                    }
-                    return criteriaBuilder.and(predicates.toArray(new Predicate[0]));
-                })
-        ).stream().map(this::toInternal).collect(Collectors.toList());
+                  if (Objects.nonNull(request.getFirstName())) {
+                    predicates.add(
+                        criteriaBuilder.equal(
+                            root.get(DbAccount.DbAccountMapping.FIRST_NAME.getField()),
+                            request.getFirstName()));
+                  }
+                  if (Objects.nonNull(request.getLastName())) {
+                    predicates.add(
+                        criteriaBuilder.equal(
+                            root.get(DbAccount.DbAccountMapping.LAST_NAME.getField()),
+                            request.getLastName()));
+                  }
+                  if (Objects.nonNull(request.getPhone())) {
+                    predicates.add(
+                        criteriaBuilder.equal(
+                            root.get(DbAccount.DbAccountMapping.PHONE.getField()),
+                            request.getPhone()));
+                  }
+                  if (Objects.nonNull(request.getStrikes())) {
+                    predicates.add(
+                        criteriaBuilder.equal(
+                            root.get(DbAccount.DbAccountMapping.STRIKES.getField()),
+                            request.getStrikes()));
+                  }
+                  return criteriaBuilder.and(predicates.toArray(new Predicate[0]));
+                }),
+            PageRequest.of(request.getPageNumber(), request.getPageSize()))
+        .stream()
+        .map(this::toInternal)
+        .collect(Collectors.toList());
     }
 
     public InternalTerm getTermBy(Long id) {
@@ -281,39 +293,42 @@ public class InternalOrderService {
     }
 
     public List<InternalTerm> search(SearchTermRequest request) {
-        return termRepo.findAll(
-                ((Specification<DbTerm>)(root, criteriaQuery, criteriaBuilder) -> {
-                    List<Predicate> predicates = new ArrayList<>();
+    return termRepo
+        .findAll(
+            ((Specification<DbTerm>)
+                (root, criteriaQuery, criteriaBuilder) -> {
+                  List<Predicate> predicates = new ArrayList<>();
 
-                    if (Objects.nonNull(request.getAccountId())) {
-                        predicates.add(
-                                criteriaBuilder.equal(
-                                        root.get(DbTerm.DbTermMapping.ACCOUNT_ID.getField()),
-                                        request.getAccountId()));
-                    }
-                    if (Objects.nonNull(request.getOfferId())) {
-                        predicates.add(
-                                criteriaBuilder.equal(
-                                        root.get(DbTerm.DbTermMapping.OFFER_ID.getField()),
-                                        request.getOfferId()));
-                    }
-                    if (Objects.nonNull(request.getFrom())) {
-                        predicates.add(
-                                criteriaBuilder.greaterThanOrEqualTo(
-                                        root.get(DbTerm.DbTermMapping.FROM.getField()),
-                                        request.getFrom()));
-                    }
-                    if (Objects.nonNull(request.getTo())) {
-                        predicates.add(
-                                criteriaBuilder.lessThanOrEqualTo(
-                                        root.get(DbTerm.DbTermMapping.TO.getField()),
-                                        request.getTo()
-                                )
-                        );
-                    }
-                    return criteriaBuilder.and(predicates.toArray(new Predicate[0]));
-                })
-        ).stream().map(this::toInternal).collect(Collectors.toList());
+                  if (Objects.nonNull(request.getAccountId())) {
+                    predicates.add(
+                        criteriaBuilder.equal(
+                            root.get(DbTerm.DbTermMapping.ACCOUNT_ID.getField())
+                                .get(DbAccount.DbAccountMapping.ID.getField()),
+                            request.getAccountId()));
+                  }
+                  if (Objects.nonNull(request.getOfferId())) {
+                    predicates.add(
+                        criteriaBuilder.equal(
+                            root.get(DbTerm.DbTermMapping.OFFER_ID.getField())
+                                .get(DbOffer.DbOfferMapping.ID.getField()),
+                            request.getOfferId()));
+                  }
+                  if (Objects.nonNull(request.getFrom())) {
+                    predicates.add(
+                        criteriaBuilder.greaterThanOrEqualTo(
+                            root.get(DbTerm.DbTermMapping.FROM.getField()), request.getFrom()));
+                  }
+                  if (Objects.nonNull(request.getTo())) {
+                    predicates.add(
+                        criteriaBuilder.lessThanOrEqualTo(
+                            root.get(DbTerm.DbTermMapping.TO.getField()), request.getTo()));
+                  }
+                  return criteriaBuilder.and(predicates.toArray(new Predicate[0]));
+                }),
+            PageRequest.of(request.getPageNumber(), request.getPageSize()))
+        .stream()
+        .map(this::toInternal)
+        .collect(Collectors.toList());
     }
 
     public InternalBusiness toInternal(DbBusiness dbBusiness) {

@@ -66,7 +66,7 @@ public class DbBusiness extends DbEntity<Long> {
     @Column(name = "min_interval")
     private String minInterval;
 
-    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "business")
+    @OneToMany(fetch = FetchType.EAGER, orphanRemoval = true, mappedBy = "business")
     private Set<DbOffer> offers = new HashSet<>();
 
     public DbBusiness(Long id) {

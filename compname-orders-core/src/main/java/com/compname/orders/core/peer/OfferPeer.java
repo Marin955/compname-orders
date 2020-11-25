@@ -53,7 +53,7 @@ public class OfferPeer implements OfferService {
         try{ id = validator.validate(request); } catch (OrdersServiceException exception) {
             return new DeleteOfferResponse(request, ResponseCode.REQUEST_INVALID, null);
         }
-        Offer offer = service.getOfferBy(id).toApi();
+        Offer offer = service.getOfferBy(id).delete().toApi();
         return new DeleteOfferResponse(request, ResponseCode.OK, offer);
     }
 
