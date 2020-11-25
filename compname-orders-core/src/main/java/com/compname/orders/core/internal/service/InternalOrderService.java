@@ -23,6 +23,7 @@ import com.compname.orders.api.model.business.Geolocation;
 import com.compname.orders.api.model.city.City;
 import com.compname.orders.api.model.offer.Offer;
 import com.compname.orders.api.model.term.Term;
+import com.compname.orders.core.internal.common.ApiConvertible;
 import com.compname.orders.core.internal.model.InternalAccount;
 import com.compname.orders.core.internal.model.InternalBusiness;
 import com.compname.orders.core.internal.model.InternalCity;
@@ -80,8 +81,8 @@ public class InternalOrderService {
         dbBusiness.setName(request.getName());
         dbBusiness.setCreated(request.getCreated());
         dbBusiness.setCreatedBy(request.getCreatedBy());
-        dbBusiness.setCity(cityRepo.findByName(request.getAddress().getCity()));
-        dbBusiness.setAddress(request.getAddress().getAddress());
+        dbBusiness.setCity(cityRepo.getOne(request.getCityId()));
+        dbBusiness.setAddress(request.getAddress());
         dbBusiness.setLongitude(request.getGeolocation().getLongitude());
         dbBusiness.setLatitude(request.getGeolocation().getLatitude());
         dbBusiness.setPhone(request.getContactInfo().getPhone());
@@ -284,6 +285,7 @@ public class InternalOrderService {
     public InternalTerm create(CreateTermRequest request) {
         DbTerm dbTerm = new DbTerm();
 
+        dbTerm.setCreated(request.getCreated());
         dbTerm.setFrom(request.getFrom());
         dbTerm.setTo(request.getTo());
         dbTerm.setAccount(accountRepo.getOne(request.getAccountId()));
@@ -391,6 +393,13 @@ public class InternalOrderService {
             }
 
             @Override
+            public List<InternalOffer> getOffers() {
+                return dbBusiness.getOffers().stream()
+                        .map(InternalOrderService.this::toInternal)
+                        .collect(Collectors.toList());
+            }
+
+            @Override
             public Business toApi() {
                 return new Business(
                         getId(),
@@ -402,7 +411,9 @@ public class InternalOrderService {
                         getContactInfo(),
                         getGeolocation(),
                         getRating(),
-                        getMinInterval());
+                        getMinInterval(),
+                        getOffers().stream().map(ApiConvertible::toApi).collect(Collectors.toList())
+                );
             }
 
             /** {@inheritDoc} */
@@ -482,6 +493,13 @@ public class InternalOrderService {
             }
 
             @Override
+            public List<InternalTerm> getTerms() {
+                return dbOffer.getTerms().stream()
+                        .map(InternalOrderService.this::toInternal)
+                        .collect(Collectors.toList());
+            }
+
+            @Override
             public Offer toApi() {
                 return new Offer(
                         getId(),
@@ -490,7 +508,8 @@ public class InternalOrderService {
                         getCreatedBy(),
                         getBusinessId(),
                         getPrice(),
-                        getDuration()
+                        getDuration(),
+                        getTerms().stream().map(ApiConvertible::toApi).collect(Collectors.toList())
                 );
             }
 
@@ -543,11 +562,19 @@ public class InternalOrderService {
             }
 
             @Override
+            public List<InternalBusiness> getBusinesses() {
+                return dbCity.getBusinesses().stream()
+                        .map(InternalOrderService.this::toInternal)
+                        .collect(Collectors.toList());
+            }
+
+            @Override
             public City toApi() {
                 return new City(
                         getId(),
                         getName(),
-                        getPostalCode()
+                        getPostalCode(),
+                        getBusinesses().stream().map(ApiConvertible::toApi).collect(Collectors.toList())
                 );
             }
 
@@ -623,6 +650,13 @@ public class InternalOrderService {
             }
 
             @Override
+            public List<InternalTerm> getTerms() {
+                return dbAccount.getTerms().stream()
+                        .map(InternalOrderService.this::toInternal)
+                        .collect(Collectors.toList());
+            }
+
+            @Override
             public Account toApi() {
                 return new Account(
                         getId(),
@@ -632,7 +666,8 @@ public class InternalOrderService {
                         getMail(),
                         getPassword(),
                         getPhone(),
-                        getStrikes()
+                        getStrikes(),
+                        getTerms().stream().map(ApiConvertible::toApi).collect(Collectors.toList())
                 );
             }
 
@@ -678,6 +713,9 @@ public class InternalOrderService {
             }
 
             @Override
+            public ZonedDateTime getCreated() { return dbTerm.getCreated(); }
+
+            @Override
             public Long getOfferId() {
                 return dbTerm.getOffer().getId();
             }
@@ -701,6 +739,7 @@ public class InternalOrderService {
             public Term toApi() {
                 return new Term(
                         getId(),
+                        getCreated(),
                         getOfferId(),
                         getAccountId(),
                         getFrom(),

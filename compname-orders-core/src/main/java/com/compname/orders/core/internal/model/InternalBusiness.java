@@ -9,7 +9,8 @@ import com.compname.orders.core.internal.common.ApiConvertible;
 import com.compname.orders.core.internal.common.Deletable;
 import com.compname.orders.core.internal.common.InternalBasicEntity;
 import com.compname.orders.core.internal.common.Updatable;
-import com.compname.orders.core.persistence.model.DbBusiness;
+
+import java.util.List;
 
 public interface InternalBusiness extends
         InternalBasicEntity,
@@ -23,4 +24,5 @@ public interface InternalBusiness extends
     Geolocation getGeolocation();
     String getMinInterval();
     Float getRating();
+    List<InternalOffer> getOffers();
 }

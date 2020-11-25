@@ -7,6 +7,8 @@ import com.compname.orders.core.internal.common.Deletable;
 import com.compname.orders.core.internal.common.InternalIdEntity;
 import com.compname.orders.core.internal.common.Updatable;
 
+import java.util.List;
+
 public interface InternalCity extends
         InternalIdEntity,
         ApiConvertible<City>,
@@ -14,4 +16,5 @@ public interface InternalCity extends
         Updatable<InternalCity, UpdateCityRequest> {
     String getName();
     Integer getPostalCode();
+    List<InternalBusiness> getBusinesses();
 }

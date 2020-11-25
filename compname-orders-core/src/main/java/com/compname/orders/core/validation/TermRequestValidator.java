@@ -7,6 +7,7 @@ import com.compname.orders.utility.OrdersServiceException;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.ZonedDateTime;
 import java.util.Objects;
 
 @AllArgsConstructor
@@ -29,6 +30,9 @@ public class TermRequestValidator extends AbstractRequestValidator {
     public CreateTermRequest validate(CreateTermRequest request) {
         validateBaseRequest(request);
 
+        if (Objects.isNull(request.getCreated())) {
+            request.setCreated(ZonedDateTime.now());
+        }
         notNull(request.getFrom(), FROM_TIME);
         notNull(request.getTo(), TO_TIME);
         notNull(request.getOfferId(), OFFER_ID);

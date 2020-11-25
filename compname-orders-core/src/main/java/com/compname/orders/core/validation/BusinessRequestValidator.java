@@ -36,9 +36,8 @@ public class BusinessRequestValidator extends AbstractRequestValidator {
         }
         notEmpty(request.getCreatedBy(), CREATED_BY);
         notNull(request.getOib(), OIB);
-        notEmpty(request.getAddress().getAddress(), ADDRESS);
-        notEmpty(request.getAddress().getCity(), CITY);
-        notNull(request.getAddress().getPostalCode(), POSTAL_CODE);
+        notNull(request.getCityId(), CITY);
+        notNull(request.getAddress(), ADDRESS);
         notEmpty(request.getContactInfo().getPhone(), PHONE);
         notNull(request.getGeolocation().getLatitude(), LATITUDE);
         notNull(request.getGeolocation().getLongitude(), LONGITUDE);

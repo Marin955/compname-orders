@@ -14,7 +14,7 @@ import java.time.ZonedDateTime;
 @Getter
 public class CreateTermRequest extends ApiIdRequest {
 
-    //TODO created field
+    private ZonedDateTime created;
     private Long offerId;
     private Long accountId;
     private ZonedDateTime from;
@@ -22,6 +22,7 @@ public class CreateTermRequest extends ApiIdRequest {
 
     public CreateTermRequest(Long id, Long offerId, Long accountId, ZonedDateTime from, ZonedDateTime to) {
         super(id);
+        this.created = ZonedDateTime.now();
         this.offerId = offerId;
         this.accountId = accountId;
         this.from = from;

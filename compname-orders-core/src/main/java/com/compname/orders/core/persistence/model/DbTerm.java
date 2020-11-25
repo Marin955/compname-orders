@@ -31,6 +31,9 @@ public class DbTerm extends DbEntity<Long> {
     @JoinColumn(name = "account_id", nullable = false)
     private DbAccount account;
 
+    @Column(name = "created")
+    private ZonedDateTime created;
+
     @Column(name = "from_time")
     private ZonedDateTime from;
 

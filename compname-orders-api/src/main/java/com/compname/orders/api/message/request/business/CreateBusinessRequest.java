@@ -14,28 +14,29 @@ import lombok.Setter;
 public class CreateBusinessRequest extends BasicEntity {
 
     private Long oib;
-    private Address address;
+    private Long cityId;
+    private String address;
     private ContactInfo contactInfo;
     private Geolocation geolocation;
     private String minInterval;
 
-    public CreateBusinessRequest(Long id, String name, String createdBy, Long oib, Address address, ContactInfo contactInfo, Geolocation geolocation, String minInterval) {
+    public CreateBusinessRequest(Long id, String name, String createdBy, Long oib, Long cityId, String address, ContactInfo contactInfo, Geolocation geolocation, String minInterval) {
         super(id, name, createdBy);
         this.oib = oib;
+        this.cityId = cityId;
         this.address = address;
         this.contactInfo = contactInfo;
         this.geolocation = geolocation;
         this.minInterval = minInterval;
     }
 
-    public CreateBusinessRequest(String name, String createdBy, Long oib, Address address, ContactInfo contactInfo, Geolocation geolocation, String minInterval) {
+    public CreateBusinessRequest(String name, String createdBy, Long oib, Long cityId, String address, ContactInfo contactInfo, Geolocation geolocation, String minInterval) {
         super(name, createdBy);
         this.oib = oib;
+        this.cityId = cityId;
         this.address = address;
         this.contactInfo = contactInfo;
         this.geolocation = geolocation;
         this.minInterval = minInterval;
     }
-
-
 }
