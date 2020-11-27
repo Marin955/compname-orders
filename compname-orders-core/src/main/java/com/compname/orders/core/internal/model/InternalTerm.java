@@ -18,6 +18,7 @@ public interface InternalTerm extends
     ZonedDateTime getCreated();
     Long getOfferId();
     Long getAccountId();
+    Long getEmployeeId();
     ZonedDateTime getFrom();
     ZonedDateTime getTo();
 

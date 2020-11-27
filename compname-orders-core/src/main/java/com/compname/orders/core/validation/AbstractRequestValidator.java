@@ -36,6 +36,8 @@ public abstract class AbstractRequestValidator
     protected static final String LONGITUDE = "longitude";
     protected static final String BUSINESS_ID = "business id";
     protected static final String OFFER_ID = "offer id";
+    protected static final String EMPLOYEE_ID = "employee id";
+    protected static final String DURATION = "duration";
 
     /**
      * The Logger.

@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.time.Duration;
 import java.time.ZonedDateTime;
 import java.util.List;
 
@@ -15,10 +16,10 @@ import java.util.List;
 public class Offer extends ApiBasicEntity {
     private Long businessId;
     private Float price;
-    private String duration;
+    private Duration duration;
     private List<Term> terms;
 
-    public Offer(Long id, String name, ZonedDateTime created, String createdBy, Long businessId, Float price, String duration, List<Term> terms) {
+    public Offer(Long id, String name, ZonedDateTime created, String createdBy, Long businessId, Float price, Duration duration, List<Term> terms) {
         super(id, name, created, createdBy);
         this.businessId = businessId;
         this.price = price;
@@ -26,7 +27,7 @@ public class Offer extends ApiBasicEntity {
         this.terms = terms;
     }
 
-    public Offer(String name, ZonedDateTime created, String createdBy, Long businessId, Float price, String duration, List<Term> terms) {
+    public Offer(String name, ZonedDateTime created, String createdBy, Long businessId, Float price, Duration duration, List<Term> terms) {
         super(name, created, createdBy);
         this.businessId = businessId;
         this.price = price;

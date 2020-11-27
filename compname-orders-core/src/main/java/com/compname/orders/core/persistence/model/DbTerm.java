@@ -28,8 +28,12 @@ public class DbTerm extends DbEntity<Long> {
     private DbOffer offer;
 
     @ManyToOne
-    @JoinColumn(name = "account_id", nullable = false)
+    @JoinColumn(name = "account_id")
     private DbAccount account;
+
+    @ManyToOne
+    @JoinColumn(name = "employee_id", nullable = false)
+    private DbEmployee employee;
 
     @Column(name = "created")
     private ZonedDateTime created;
@@ -47,6 +51,7 @@ public class DbTerm extends DbEntity<Long> {
         ID("id", "id"),
         OFFER_ID("offer", "offer_id"),
         ACCOUNT_ID("account", "account_id"),
+        EMPLOYEE_ID("employee", "employee_id"),
         FROM("from", "from_time"),
         TO("to", "to_time");
 

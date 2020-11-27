@@ -7,7 +7,9 @@ import com.compname.orders.utility.OrdersServiceException;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.Duration;
 import java.time.ZonedDateTime;
+import java.time.format.DateTimeParseException;
 import java.util.Objects;
 
 @AllArgsConstructor
@@ -34,6 +36,11 @@ public class OfferRequestValidator extends AbstractRequestValidator {
         notEmpty(request.getCreatedBy(), CREATED_BY);
         notNull(request.getCreated(), CREATED);
         notNull(request.getBusinessId(), BUSINESS_ID);
+        notNull(request.getDuration(), DURATION);
+        try{ Duration.parse(request.getDuration()); }
+        catch (DateTimeParseException parseException) {
+            throw OrdersServiceException.validationError("Invalid duration format [duration=%s]", request.getDuration());
+        }
 
         return request;
     }
@@ -54,7 +61,7 @@ public class OfferRequestValidator extends AbstractRequestValidator {
         request.setName(Objects.isNull(request.getName())
                 ? internalOffer.getName() : request.getName());
         request.setDuration(Objects.isNull(request.getDuration())
-                ? internalOffer.getDuration() : request.getDuration());
+                ? internalOffer.getDuration().toString() : request.getDuration());
         request.setPrice(Objects.isNull(request.getPrice())
                 ? internalOffer.getPrice() : request.getPrice());
         return request;

@@ -1,7 +1,6 @@
 package com.compname.orders.api.message.request.business;
 
-import com.compname.orders.api.message.request.BasicEntity;
-import com.compname.orders.api.model.business.Address;
+import com.compname.orders.api.message.request.ApiBasicEntityRequest;
 import com.compname.orders.api.model.business.ContactInfo;
 import com.compname.orders.api.model.business.Geolocation;
 import lombok.Getter;
@@ -11,7 +10,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @Setter
 @Getter
-public class CreateBusinessRequest extends BasicEntity {
+public class CreateBusinessRequest extends ApiBasicEntityRequest {
 
     private Long oib;
     private Long cityId;

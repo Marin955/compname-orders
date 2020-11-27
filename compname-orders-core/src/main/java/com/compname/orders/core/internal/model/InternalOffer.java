@@ -7,6 +7,7 @@ import com.compname.orders.core.internal.common.Deletable;
 import com.compname.orders.core.internal.common.InternalBasicEntity;
 import com.compname.orders.core.internal.common.Updatable;
 
+import java.time.Duration;
 import java.util.List;
 
 public interface InternalOffer extends
@@ -17,7 +18,7 @@ public interface InternalOffer extends
 
     Long getBusinessId();
     Float getPrice();
-    String getDuration();
+    Duration getDuration();
     List<InternalTerm> getTerms();
 
 }

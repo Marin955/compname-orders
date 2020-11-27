@@ -17,14 +17,16 @@ public class CreateTermRequest extends ApiIdRequest {
     private ZonedDateTime created;
     private Long offerId;
     private Long accountId;
+    private Long employeeId;
     private ZonedDateTime from;
     private ZonedDateTime to;
 
-    public CreateTermRequest(Long id, Long offerId, Long accountId, ZonedDateTime from, ZonedDateTime to) {
+    public CreateTermRequest(Long id, Long offerId, Long accountId, Long employeeId, ZonedDateTime from, ZonedDateTime to) {
         super(id);
         this.created = ZonedDateTime.now();
         this.offerId = offerId;
         this.accountId = accountId;
+        this.employeeId = employeeId;
         this.from = from;
         this.to = to;
     }

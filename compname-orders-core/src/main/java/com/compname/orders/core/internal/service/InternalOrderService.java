@@ -9,6 +9,9 @@ import com.compname.orders.api.message.request.business.UpdateBusinessRequest;
 import com.compname.orders.api.message.request.city.CreateCityRequest;
 import com.compname.orders.api.message.request.city.SearchCityRequest;
 import com.compname.orders.api.message.request.city.UpdateCityRequest;
+import com.compname.orders.api.message.request.employee.CreateEmployeeRequest;
+import com.compname.orders.api.message.request.employee.SearchEmployeeRequest;
+import com.compname.orders.api.message.request.employee.UpdateEmployeeRequest;
 import com.compname.orders.api.message.request.offer.CreateOfferRequest;
 import com.compname.orders.api.message.request.offer.SearchOfferRequest;
 import com.compname.orders.api.message.request.offer.UpdateOfferRequest;
@@ -21,21 +24,25 @@ import com.compname.orders.api.model.business.Business;
 import com.compname.orders.api.model.business.ContactInfo;
 import com.compname.orders.api.model.business.Geolocation;
 import com.compname.orders.api.model.city.City;
+import com.compname.orders.api.model.employee.Employee;
 import com.compname.orders.api.model.offer.Offer;
 import com.compname.orders.api.model.term.Term;
 import com.compname.orders.core.internal.common.ApiConvertible;
 import com.compname.orders.core.internal.model.InternalAccount;
 import com.compname.orders.core.internal.model.InternalBusiness;
 import com.compname.orders.core.internal.model.InternalCity;
+import com.compname.orders.core.internal.model.InternalEmployee;
 import com.compname.orders.core.internal.model.InternalOffer;
 import com.compname.orders.core.internal.model.InternalTerm;
 import com.compname.orders.core.persistence.model.DbAccount;
 import com.compname.orders.core.persistence.model.DbBusiness;
 import com.compname.orders.core.persistence.model.DbCity;
+import com.compname.orders.core.persistence.model.DbEmployee;
 import com.compname.orders.core.persistence.model.DbOffer;
 import com.compname.orders.core.persistence.model.DbTerm;
 import com.compname.orders.core.persistence.repository.BusinessRepository;
 import com.compname.orders.core.persistence.repository.CityRepository;
+import com.compname.orders.core.persistence.repository.EmployeeRepository;
 import com.compname.orders.core.persistence.repository.OfferRepository;
 import com.compname.orders.core.persistence.repository.TermRepository;
 import com.compname.orders.core.persistence.repository.AccountRepository;
@@ -48,12 +55,14 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.criteria.Predicate;
+import java.time.Duration;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 @AllArgsConstructor
@@ -67,6 +76,7 @@ public class InternalOrderService {
     private final OfferRepository offerRepo;
     private final TermRepository termRepo;
     private final AccountRepository accountRepo;
+    private final EmployeeRepository employeeRepo;
 
     public InternalBusiness getBusinessBy(Long id) {
         Optional<DbBusiness> result = businessRepo.findById(id);
@@ -290,6 +300,7 @@ public class InternalOrderService {
         dbTerm.setTo(request.getTo());
         dbTerm.setAccount(accountRepo.getOne(request.getAccountId()));
         dbTerm.setOffer(offerRepo.getOne(request.getOfferId()));
+        dbTerm.setEmployee(employeeRepo.getOne(request.getEmployeeId()));
 
         return toInternal(termRepo.save(dbTerm));
     }
@@ -301,36 +312,96 @@ public class InternalOrderService {
                 (root, criteriaQuery, criteriaBuilder) -> {
                   List<Predicate> predicates = new ArrayList<>();
 
-                  if (Objects.nonNull(request.getAccountId())) {
-                    predicates.add(
-                        criteriaBuilder.equal(
-                            root.get(DbTerm.DbTermMapping.ACCOUNT_ID.getField())
-                                .get(DbAccount.DbAccountMapping.ID.getField()),
-                            request.getAccountId()));
-                  }
-                  if (Objects.nonNull(request.getOfferId())) {
-                    predicates.add(
-                        criteriaBuilder.equal(
-                            root.get(DbTerm.DbTermMapping.OFFER_ID.getField())
-                                .get(DbOffer.DbOfferMapping.ID.getField()),
-                            request.getOfferId()));
-                  }
-                  if (Objects.nonNull(request.getFrom())) {
-                    predicates.add(
-                        criteriaBuilder.greaterThanOrEqualTo(
-                            root.get(DbTerm.DbTermMapping.FROM.getField()), request.getFrom()));
-                  }
-                  if (Objects.nonNull(request.getTo())) {
-                    predicates.add(
-                        criteriaBuilder.lessThanOrEqualTo(
-                            root.get(DbTerm.DbTermMapping.TO.getField()), request.getTo()));
-                  }
-                  return criteriaBuilder.and(predicates.toArray(new Predicate[0]));
+                    if (Objects.nonNull(request.getAccountId())) {
+                        predicates.add(
+                                criteriaBuilder.equal(
+                                        root.get(DbTerm.DbTermMapping.ACCOUNT_ID.getField())
+                                                .get(DbAccount.DbAccountMapping.ID.getField()),
+                                        request.getAccountId()));
+                    }
+                    if (Objects.nonNull(request.getOfferId())) {
+                        predicates.add(
+                                criteriaBuilder.equal(
+                                        root.get(DbTerm.DbTermMapping.OFFER_ID.getField())
+                                                .get(DbOffer.DbOfferMapping.ID.getField()),
+                                        request.getOfferId()));
+                    }
+                    if (Objects.nonNull(request.getEmployeeId())) {
+                        predicates.add(
+                                criteriaBuilder.equal(
+                                        root.get(DbTerm.DbTermMapping.EMPLOYEE_ID.getField())
+                                                .get(DbEmployee.DbEmployeeMapping.ID.getField()),
+                                        request.getEmployeeId()));
+                    }
+                    if (Objects.nonNull(request.getFrom())) {
+                        predicates.add(
+                                criteriaBuilder.greaterThanOrEqualTo(
+                                        root.get(DbTerm.DbTermMapping.FROM.getField()), request.getFrom()));
+                    }
+                    if (Objects.nonNull(request.getTo())) {
+                        predicates.add(
+                                criteriaBuilder.lessThanOrEqualTo(
+                                        root.get(DbTerm.DbTermMapping.TO.getField()), request.getTo()));
+                    }
+                    return criteriaBuilder.and(predicates.toArray(new Predicate[0]));
                 }),
-            PageRequest.of(request.getPageNumber(), request.getPageSize()))
-        .stream()
-        .map(this::toInternal)
-        .collect(Collectors.toList());
+                PageRequest.of(request.getPageNumber(), request.getPageSize()))
+            .stream()
+            .map(this::toInternal)
+            .collect(Collectors.toList());
+    }
+
+    public InternalEmployee getEmployeeBy(Long id) {
+        Optional<DbEmployee> result = employeeRepo.findById(id);
+        return result.map(this::toInternal).orElse(null);
+    }
+
+    public InternalEmployee create(CreateEmployeeRequest request) {
+        DbEmployee dbEmployee = new DbEmployee();
+
+        dbEmployee.setName(request.getName());
+        dbEmployee.setCreated(request.getCreated());
+        dbEmployee.setCreatedBy(request.getCreatedBy());
+        dbEmployee.setTitle(request.getTitle());
+        dbEmployee.setBusiness(businessRepo.getOne(request.getBusinessId()));
+        dbEmployee.setOffers(request.getOfferIds().stream().map(offerRepo::getOne).collect(Collectors.toSet()));
+
+        return toInternal(employeeRepo.save(dbEmployee));
+    }
+
+    public List<InternalEmployee> search(SearchEmployeeRequest request) {
+        return employeeRepo
+                .findAll(
+                        ((Specification<DbEmployee>)
+                                (root, criteriaQuery, criteriaBuilder) -> {
+                                    List<Predicate> predicates = new ArrayList<>();
+
+                                    if (Objects.nonNull(request.getName())) {
+                                        predicates.add(
+                                                criteriaBuilder.equal(
+                                                        root.get(DbEmployee.DbEmployeeMapping.NAME.getField()),
+                                                        request.getName()));
+                                    }
+                                    if (Objects.nonNull(request.getBusinessId())) {
+                                        predicates.add(
+                                                criteriaBuilder.equal(
+                                                        root.get(DbEmployee.DbEmployeeMapping.BUSINESS.getField())
+                                                                .get(DbBusiness.DbBusinessMapping.ID.getField()),
+                                                        request.getBusinessId()));
+                                    }
+                                    if (Objects.nonNull(request.getOfferId())) {
+                                        predicates.add(
+                                                criteriaBuilder.greaterThanOrEqualTo(
+                                                        root.get(DbEmployee.DbEmployeeMapping.OFFERS.getField())
+                                                        .get(DbEmployee.DbEmployeeMapping.OFFERS.getColumn()),
+                                                        request.getOfferId()));
+                                    }
+                                    return criteriaBuilder.and(predicates.toArray(new Predicate[0]));
+                                }),
+                        PageRequest.of(request.getPageNumber(), request.getPageSize()))
+                .stream()
+                .map(this::toInternal)
+                .collect(Collectors.toList());
     }
 
     public InternalBusiness toInternal(DbBusiness dbBusiness) {
@@ -488,8 +559,8 @@ public class InternalOrderService {
             }
 
             @Override
-            public String getDuration() {
-                return dbOffer.getDuration();
+            public Duration getDuration() {
+                return Duration.parse(dbOffer.getDuration());
             }
 
             @Override
@@ -726,6 +797,9 @@ public class InternalOrderService {
             }
 
             @Override
+            public Long getEmployeeId() { return dbTerm.getEmployee().getId(); }
+
+            @Override
             public ZonedDateTime getFrom() {
                 return dbTerm.getFrom();
             }
@@ -742,6 +816,7 @@ public class InternalOrderService {
                         getCreated(),
                         getOfferId(),
                         getAccountId(),
+                        getEmployeeId(),
                         getFrom(),
                         getTo()
                 );
@@ -770,6 +845,81 @@ public class InternalOrderService {
                 dbTerm.setTo(request.getTo());
 
                 return toInternal(termRepo.save(dbTerm));
+            }
+        };
+    }
+
+    public InternalEmployee toInternal(DbEmployee dbEmployee) {
+        return new InternalEmployee() {
+
+            private final AtomicBoolean isDeleted = new AtomicBoolean(false);
+
+            @Override
+            public Long getId() { return dbEmployee.getId(); }
+
+            @Override
+            public String getName() { return dbEmployee.getName(); }
+
+            @Override
+            public ZonedDateTime getCreated() { return dbEmployee.getCreated(); }
+
+            @Override
+            public String getCreatedBy() { return dbEmployee.getCreatedBy(); }
+
+            @Override
+            public String getTitle() { return dbEmployee.getTitle(); }
+
+            @Override
+            public List<InternalOffer> getOffers() {
+                return dbEmployee.getOffers()
+                        .stream()
+                        .map(InternalOrderService.this::toInternal)
+                        .collect(Collectors.toList());
+            }
+
+            @Override
+            public Long getBusinessId() { return dbEmployee.getBusiness().getId(); }
+
+            @Override
+            public Employee toApi() {
+                return new Employee(
+                        getId(),
+                        getName(),
+                        getCreated(),
+                        getCreatedBy(),
+                        getTitle(),
+                        getBusinessId(),
+                        getOffers().stream().map(ApiConvertible::toApi).collect(Collectors.toSet())
+                );
+            }
+
+            /** {@inheritDoc} */
+            @Override
+            public InternalEmployee delete() {
+                defendDeleted();
+                employeeRepo.delete(dbEmployee);
+                isDeleted.set(true);
+                return this;
+            }
+
+            /** Defends an already deleted entity.<br> */
+            private void defendDeleted() {
+                if (isDeleted.get()) {
+                    throw OrdersServiceException.validationError(
+                            "DB Employee entity already deleted [employee=%s]", dbEmployee);
+                }
+            }
+
+            @Override
+            public InternalEmployee update(UpdateEmployeeRequest request) {
+                dbEmployee.setName(request.getName());
+                dbEmployee.setTitle(request.getTitle());
+                dbEmployee.setOffers(request.getOfferIds()
+                        .stream()
+                        .map(offerRepo::getOne)
+                        .collect(Collectors.toSet()));
+
+                return toInternal(employeeRepo.save(dbEmployee));
             }
         };
     }

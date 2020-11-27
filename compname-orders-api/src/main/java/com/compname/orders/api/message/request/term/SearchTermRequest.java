@@ -15,6 +15,7 @@ import java.time.ZonedDateTime;
 public class SearchTermRequest extends ApiPaginationRequest {
     private Long offerId;
     private Long accountId;
+    private Long employeeId;
     private ZonedDateTime from;
     private ZonedDateTime to;
 }

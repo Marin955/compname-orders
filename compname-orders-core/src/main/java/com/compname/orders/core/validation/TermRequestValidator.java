@@ -36,6 +36,7 @@ public class TermRequestValidator extends AbstractRequestValidator {
         notNull(request.getFrom(), FROM_TIME);
         notNull(request.getTo(), TO_TIME);
         notNull(request.getOfferId(), OFFER_ID);
+        notNull(request.getEmployeeId(), EMPLOYEE_ID);
 
         return request;
     }

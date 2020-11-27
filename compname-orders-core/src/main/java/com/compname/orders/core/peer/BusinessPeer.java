@@ -68,7 +68,7 @@ public class BusinessPeer implements BusinessService {
             return new DeleteBusinessResponse(request, ResponseCode.REQUEST_INVALID, null);
         }
         Business business = service.getBusinessBy(id).delete().toApi();
-        return new DeleteBusinessResponse(request, ResponseCode.OK, null);
+        return new DeleteBusinessResponse(request, ResponseCode.OK, business);
     }
 
     @Override

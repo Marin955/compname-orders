@@ -17,14 +17,16 @@ public class Term extends ApiIdEntity {
     private ZonedDateTime created;
     private Long offerId;
     private Long accountId;
+    private Long employeeId;
     private ZonedDateTime from;
     private ZonedDateTime to;
 
-    public Term(Long id, ZonedDateTime created, Long offerId, Long accountId, ZonedDateTime from, ZonedDateTime to) {
+    public Term(Long id, ZonedDateTime created, Long offerId, Long accountId, Long employeeId, ZonedDateTime from, ZonedDateTime to) {
         super(id);
         this.created = created;
         this.offerId = offerId;
         this.accountId = accountId;
+        this.employeeId = employeeId;
         this.from = from;
         this.to = to;
     }

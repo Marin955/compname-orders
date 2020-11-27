@@ -1,6 +1,6 @@
 package com.compname.orders.api.message.request.offer;
 
-import com.compname.orders.api.message.request.BasicEntity;
+import com.compname.orders.api.message.request.ApiBasicEntityRequest;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -8,7 +8,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @Setter
 @Getter
-public class CreateOfferRequest extends BasicEntity {
+public class CreateOfferRequest extends ApiBasicEntityRequest {
 
     private Long businessId;
     private Float price;

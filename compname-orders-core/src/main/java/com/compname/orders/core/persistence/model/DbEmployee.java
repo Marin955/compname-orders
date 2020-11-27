@@ -5,7 +5,19 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
 import java.time.ZonedDateTime;
 import java.util.HashSet;
 import java.util.Set;
@@ -14,11 +26,11 @@ import java.util.Set;
 @Setter
 @Getter
 @Entity
-@Table(name = "offer")
-@SequenceGenerator(name = DbOffer.SEQUENCE_NAME, sequenceName = DbOffer.SEQUENCE_NAME, allocationSize = 1)
-public class DbOffer extends DbEntity<Long> {
+@Table(name = "employee")
+@SequenceGenerator(name = DbEmployee.SEQUENCE_NAME, sequenceName = DbEmployee.SEQUENCE_NAME, allocationSize = 1)
+public class DbEmployee extends DbEntity<Long> {
 
-    public static final String SEQUENCE_NAME = "s_offer";
+    public static final String SEQUENCE_NAME = "s_employee";
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = SEQUENCE_NAME)
@@ -38,32 +50,32 @@ public class DbOffer extends DbEntity<Long> {
     @Column(name = "created_by")
     private String createdBy;
 
-    @Column(name = "price")
-    private Float price;
+    @Column(name = "title")
+    private String title;
 
-    @Column(name = "duration")
-    private String duration;
-
-    @OneToMany(fetch = FetchType.EAGER, orphanRemoval = true, mappedBy = "offer")
+    @OneToMany(fetch = FetchType.EAGER, orphanRemoval = true, mappedBy = "employee")
     private Set<DbTerm> terms = new HashSet<>();
 
-    @ManyToMany(mappedBy = "offers")
-    private Set<DbEmployee> employees = new HashSet<>();
+    @ManyToMany
+    @JoinTable(
+            name = "employee_offer_mapping",
+            joinColumns = @JoinColumn(name = "employee_id"),
+            inverseJoinColumns = @JoinColumn(name = "offer_id"))
+    private Set<DbOffer> offers = new HashSet<>();
 
-    public DbOffer(Long id) { this.id = id; }
+    public DbEmployee(Long id) { this.id = id; }
 
-    public enum DbOfferMapping
+    public enum DbEmployeeMapping
     {
         ID("id", "id"),
         BUSINESS("business", "business_id"),
         NAME("name", "name"),
-        PRICE("price", "price"),
-        DURATION("duration", "duration");
+        OFFERS("offers", "offer_id");
 
         private final String field;
         private final String column;
 
-        DbOfferMapping(String field, String column)
+        DbEmployeeMapping(String field, String column)
         {
             this.field = field;
             this.column = column;
@@ -86,3 +98,4 @@ public class DbOffer extends DbEntity<Long> {
         }
     }
 }
+

@@ -1,28 +1,44 @@
 package com.compname.orders.web.controller;
 
-import com.compname.orders.api.message.request.term.*;
-import com.compname.orders.api.message.response.term.*;
-import com.compname.orders.core.peer.TermPeer;
+import com.compname.orders.api.message.request.employee.CreateEmployeeRequest;
+import com.compname.orders.api.message.request.employee.DeleteEmployeeRequest;
+import com.compname.orders.api.message.request.employee.GetEmployeeRequest;
+import com.compname.orders.api.message.request.employee.SearchEmployeeRequest;
+import com.compname.orders.api.message.request.employee.UpdateEmployeeRequest;
+import com.compname.orders.api.message.response.employee.CreateEmployeeResponse;
+import com.compname.orders.api.message.response.employee.DeleteEmployeeResponse;
+import com.compname.orders.api.message.response.employee.GetEmployeeResponse;
+import com.compname.orders.api.message.response.employee.SearchEmployeeResponse;
+import com.compname.orders.api.message.response.employee.UpdateEmployeeResponse;
+import com.compname.orders.core.peer.EmployeePeer;
 import com.compname.orders.utility.OrdersServiceException;
 import lombok.AllArgsConstructor;
-import org.springframework.web.bind.annotation.*;
-
-import java.time.ZonedDateTime;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 
 @AllArgsConstructor
-@RequestMapping("/term")
+@RequestMapping("/employee")
 @RestController
-public class TermController {
+public class EmployeeController {
 
-    private final TermPeer peer;
+    private final EmployeePeer peer;
 
     @PostMapping
     public @ResponseBody
-    CreateTermResponse create(
+    CreateEmployeeResponse create(
             @RequestHeader("providerId") Long providerId,
             @RequestHeader("channel") String channel,
             @RequestHeader("user") String user,
-            @RequestBody CreateTermRequest request
+            @RequestBody CreateEmployeeRequest request
     ) throws OrdersServiceException {
         request.setProviderId(providerId);
         request.setChannel(channel);
@@ -33,13 +49,13 @@ public class TermController {
 
     @GetMapping("/{id}")
     public @ResponseBody
-    GetTermResponse get(
+    GetEmployeeResponse get(
             @RequestHeader("providerId") Long providerId,
             @RequestHeader("channel") String channel,
             @RequestHeader("user") String user,
             @PathVariable("id") Long id
     ) throws OrdersServiceException {
-        GetTermRequest request = new GetTermRequest();
+        GetEmployeeRequest request = new GetEmployeeRequest();
 
         request.setProviderId(providerId);
         request.setChannel(channel);
@@ -51,13 +67,13 @@ public class TermController {
 
     @DeleteMapping("/{id}")
     public @ResponseBody
-    DeleteTermResponse delete(
+    DeleteEmployeeResponse delete(
             @RequestHeader("providerId") Long providerId,
             @RequestHeader("channel") String channel,
             @RequestHeader("user") String user,
             @PathVariable("id") Long id
     ) throws OrdersServiceException {
-        DeleteTermRequest request = new DeleteTermRequest();
+        DeleteEmployeeRequest request = new DeleteEmployeeRequest();
 
         request.setProviderId(providerId);
         request.setChannel(channel);
@@ -69,28 +85,24 @@ public class TermController {
 
     @GetMapping
     public @ResponseBody
-    SearchTermResponse search(
+    SearchEmployeeResponse search(
             @RequestHeader("providerId") Long providerId,
             @RequestHeader("channel") String channel,
             @RequestHeader("user") String user,
+            @RequestParam(value = "name", required = false) String name,
+            @RequestParam(value = "businessId", required = false) Long businessId,
             @RequestParam(value = "offerId", required = false) Long offerId,
-            @RequestParam(value = "accountId", required = false) Long accountId,
-            @RequestParam(value = "employeeId", required = false) Long employeeId,
-            @RequestParam(value = "from", required = false) ZonedDateTime from,
-            @RequestParam(value = "to", required = false) ZonedDateTime to,
             @RequestParam(value = "pageSize", required = false) Integer pageSize,
             @RequestParam(value = "pageNumber", required = false) Integer pageNumber
     ) throws OrdersServiceException {
-        SearchTermRequest request = new SearchTermRequest();
+        SearchEmployeeRequest request = new SearchEmployeeRequest();
 
         request.setProviderId(providerId);
         request.setChannel(channel);
         request.setUser(user);
+        request.setName(name);
+        request.setBusinessId(businessId);
         request.setOfferId(offerId);
-        request.setAccountId(accountId);
-        request.setEmployeeId(employeeId);
-        request.setFrom(from);
-        request.setTo(to);
         request.setPageSize(pageSize);
         request.setPageNumber(pageNumber);
 
@@ -99,12 +111,12 @@ public class TermController {
 
     @PutMapping("/{id}")
     public @ResponseBody
-    UpdateTermResponse update(
+    UpdateEmployeeResponse update(
             @RequestHeader("providerId") Long providerId,
             @RequestHeader("channel") String channel,
             @RequestHeader("user") String user,
             @PathVariable("id") Long id,
-            @RequestBody UpdateTermRequest request
+            @RequestBody UpdateEmployeeRequest request
     ) throws OrdersServiceException {
         request.setProviderId(providerId);
         request.setChannel(channel);

@@ -1,12 +1,11 @@
 package com.compname.orders.core.validation;
 
 import com.compname.orders.api.message.request.account.*;
-import com.compname.orders.api.message.request.business.UpdateBusinessRequest;
 import com.compname.orders.core.internal.model.InternalAccount;
-import com.compname.orders.core.internal.model.InternalBusiness;
-import com.compname.orders.core.internal.model.InternalCity;
 import com.compname.orders.core.internal.service.InternalOrderService;
+import com.compname.orders.utility.OrdersServiceException;
 import lombok.AllArgsConstructor;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.ZonedDateTime;
@@ -22,6 +21,7 @@ public class AccountRequestValidator extends AbstractRequestValidator {
     private static final String PASSWORD = "password";
 
     private final InternalOrderService service;
+    private final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder(12);
 
     public Long validate(GetAccountRequest request) {
         return validateIdRequest(request);
@@ -40,6 +40,15 @@ public class AccountRequestValidator extends AbstractRequestValidator {
         notEmpty(request.getFirstName(), FIRST_NAME);
         notEmpty(request.getLastName(), LAST_NAME);
         notEmpty(request.getPassword(), PASSWORD);
+        if(request.getPassword().length() < 6) {
+            throw OrdersServiceException.validationError("Password too short, must be at least 6 characters.");
+        }
+        else if (request.getPassword().length() > 40) {
+            throw OrdersServiceException.validationError("Password too long, can't be greater than 40 characters");
+        }
+        else {
+            request.setPassword(encoder.encode(request.getPassword()));
+        }
         notEmpty(request.getPhone(), PHONE);
 
         return request;

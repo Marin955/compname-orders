@@ -1,7 +1,7 @@
-package com.compname.orders.api.message.request.city;
+package com.compname.orders.api.message.request.employee;
 
 import com.compname.orders.api.message.request.ApiIdRequest;
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor
-public class GetCityRequest extends ApiIdRequest { }
+public class GetEmployeeRequest extends ApiIdRequest { }
