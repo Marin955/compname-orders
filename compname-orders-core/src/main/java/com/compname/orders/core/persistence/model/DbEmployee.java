@@ -54,6 +54,9 @@ public class DbEmployee extends DbEntity<Long> {
     private String title;
 
     @OneToMany(fetch = FetchType.EAGER, orphanRemoval = true, mappedBy = "employee")
+    private Set<DbWorkHour> workHours;
+
+    @OneToMany(fetch = FetchType.EAGER, orphanRemoval = true, mappedBy = "employee")
     private Set<DbTerm> terms = new HashSet<>();
 
     @ManyToMany

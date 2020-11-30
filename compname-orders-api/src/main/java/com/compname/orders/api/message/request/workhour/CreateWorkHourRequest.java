@@ -1,4 +1,4 @@
-package com.compname.orders.api.message.request.term;
+package com.compname.orders.api.message.request.workhour;
 
 import com.compname.orders.api.message.request.ApiIdRequest;
 import lombok.AllArgsConstructor;
@@ -12,12 +12,15 @@ import java.time.ZonedDateTime;
 @AllArgsConstructor
 @Getter
 @Setter
-public class UpdateTermRequest extends ApiIdRequest {
+public class CreateWorkHourRequest extends ApiIdRequest {
+
+    private Long employeeId;
     private ZonedDateTime from;
     private ZonedDateTime to;
 
-    public UpdateTermRequest(Long id, ZonedDateTime from, ZonedDateTime to) {
+    public CreateWorkHourRequest(Long id, Long employeeId, ZonedDateTime from, ZonedDateTime to) {
         super(id);
+        this.employeeId = employeeId;
         this.from = from;
         this.to = to;
     }

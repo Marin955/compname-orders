@@ -1,4 +1,4 @@
-package com.compname.orders.api.message.request.term;
+package com.compname.orders.api.message.request.workhour;
 
 import com.compname.orders.api.message.request.ApiPaginationRequest;
 import lombok.AllArgsConstructor;
@@ -12,17 +12,14 @@ import java.time.ZonedDateTime;
 @AllArgsConstructor
 @Getter
 @Setter
-public class SearchTermRequest extends ApiPaginationRequest {
-    private Long offerId;
-    private Long accountId;
+public class SearchWorkHourRequest extends ApiPaginationRequest {
+
     private Long employeeId;
     private ZonedDateTime from;
     private ZonedDateTime to;
 
-    public SearchTermRequest(Integer pageNumber, Integer pageSize, Long offerId, Long accountId, Long employeeId, ZonedDateTime from, ZonedDateTime to) {
+    public SearchWorkHourRequest(Integer pageNumber, Integer pageSize, Long employeeId, ZonedDateTime from, ZonedDateTime to) {
         super(pageNumber, pageSize);
-        this.offerId = offerId;
-        this.accountId = accountId;
         this.employeeId = employeeId;
         this.from = from;
         this.to = to;

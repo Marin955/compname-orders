@@ -18,6 +18,9 @@ import com.compname.orders.api.message.request.offer.UpdateOfferRequest;
 import com.compname.orders.api.message.request.term.CreateTermRequest;
 import com.compname.orders.api.message.request.term.SearchTermRequest;
 import com.compname.orders.api.message.request.term.UpdateTermRequest;
+import com.compname.orders.api.message.request.workhour.CreateWorkHourRequest;
+import com.compname.orders.api.message.request.workhour.SearchWorkHourRequest;
+import com.compname.orders.api.message.request.workhour.UpdateWorkHourRequest;
 import com.compname.orders.api.model.account.Account;
 import com.compname.orders.api.model.business.Address;
 import com.compname.orders.api.model.business.Business;
@@ -27,6 +30,7 @@ import com.compname.orders.api.model.city.City;
 import com.compname.orders.api.model.employee.Employee;
 import com.compname.orders.api.model.offer.Offer;
 import com.compname.orders.api.model.term.Term;
+import com.compname.orders.api.model.workhour.WorkHour;
 import com.compname.orders.core.internal.common.ApiConvertible;
 import com.compname.orders.core.internal.model.InternalAccount;
 import com.compname.orders.core.internal.model.InternalBusiness;
@@ -34,18 +38,21 @@ import com.compname.orders.core.internal.model.InternalCity;
 import com.compname.orders.core.internal.model.InternalEmployee;
 import com.compname.orders.core.internal.model.InternalOffer;
 import com.compname.orders.core.internal.model.InternalTerm;
+import com.compname.orders.core.internal.model.InternalWorkHour;
 import com.compname.orders.core.persistence.model.DbAccount;
 import com.compname.orders.core.persistence.model.DbBusiness;
 import com.compname.orders.core.persistence.model.DbCity;
 import com.compname.orders.core.persistence.model.DbEmployee;
 import com.compname.orders.core.persistence.model.DbOffer;
 import com.compname.orders.core.persistence.model.DbTerm;
+import com.compname.orders.core.persistence.model.DbWorkHour;
 import com.compname.orders.core.persistence.repository.BusinessRepository;
 import com.compname.orders.core.persistence.repository.CityRepository;
 import com.compname.orders.core.persistence.repository.EmployeeRepository;
 import com.compname.orders.core.persistence.repository.OfferRepository;
 import com.compname.orders.core.persistence.repository.TermRepository;
 import com.compname.orders.core.persistence.repository.AccountRepository;
+import com.compname.orders.core.persistence.repository.WorkHourRepository;
 import com.compname.orders.utility.OrdersServiceException;
 import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
@@ -77,6 +84,7 @@ public class InternalOrderService {
     private final TermRepository termRepo;
     private final AccountRepository accountRepo;
     private final EmployeeRepository employeeRepo;
+    private final WorkHourRepository workHourRepo;
 
     public InternalBusiness getBusinessBy(Long id) {
         Optional<DbBusiness> result = businessRepo.findById(id);
@@ -395,6 +403,48 @@ public class InternalOrderService {
                                                         root.get(DbEmployee.DbEmployeeMapping.OFFERS.getField())
                                                         .get(DbEmployee.DbEmployeeMapping.OFFERS.getColumn()),
                                                         request.getOfferId()));
+                                    }
+                                    return criteriaBuilder.and(predicates.toArray(new Predicate[0]));
+                                }),
+                        PageRequest.of(request.getPageNumber(), request.getPageSize()))
+                .stream()
+                .map(this::toInternal)
+                .collect(Collectors.toList());
+    }
+
+    public InternalWorkHour getWorkHourBy(Long id) {
+        Optional<DbWorkHour> result = workHourRepo.findById(id);
+        return result.map(this::toInternal).orElse(null);
+    }
+
+    public InternalWorkHour create(CreateWorkHourRequest request) {
+        DbWorkHour dbWorkHour = new DbWorkHour();
+
+        dbWorkHour.setEmployee(employeeRepo.getOne(request.getEmployeeId()));
+        dbWorkHour.setFrom(request.getFrom());
+        dbWorkHour.setTo(request.getTo());
+
+        return toInternal(workHourRepo.save(dbWorkHour));
+    }
+
+    public List<InternalWorkHour> search(SearchWorkHourRequest request) {
+        return workHourRepo
+                .findAll(
+                        ((Specification<DbWorkHour>)
+                                (root, criteriaQuery, criteriaBuilder) -> {
+                                    List<Predicate> predicates = new ArrayList<>();
+
+                                    if (Objects.nonNull(request.getFrom())) {
+                                        predicates.add(
+                                                criteriaBuilder.greaterThanOrEqualTo(
+                                                        root.get(DbWorkHour.DbWorkHourMapping.FROM.getField()),
+                                                        request.getFrom()));
+                                    }
+                                    if (Objects.nonNull(request.getTo())) {
+                                        predicates.add(
+                                                criteriaBuilder.lessThanOrEqualTo(
+                                                        root.get(DbWorkHour.DbWorkHourMapping.TO.getField()),
+                                                        request.getTo()));
                                     }
                                     return criteriaBuilder.and(predicates.toArray(new Predicate[0]));
                                 }),
@@ -920,6 +970,68 @@ public class InternalOrderService {
                         .collect(Collectors.toSet()));
 
                 return toInternal(employeeRepo.save(dbEmployee));
+            }
+        };
+    }
+
+    public InternalWorkHour toInternal(DbWorkHour dbWorkHour) {
+        return new InternalWorkHour() {
+
+            private final AtomicBoolean isDeleted = new AtomicBoolean(false);
+
+            @Override
+            public Long getId() {
+                return dbWorkHour.getId();
+            }
+
+            @Override
+            public Long getEmployeeId() {
+                return dbWorkHour.getId();
+            }
+
+            @Override
+            public ZonedDateTime getFrom() {
+                return dbWorkHour.getFrom();
+            }
+
+            @Override
+            public ZonedDateTime getTo() {
+                return dbWorkHour.getTo();
+            }
+
+            @Override
+            public WorkHour toApi() {
+                return new WorkHour(
+                        getId(),
+                        getEmployeeId(),
+                        getFrom(),
+                        getTo()
+                );
+            }
+
+            @Override
+            public InternalWorkHour update(UpdateWorkHourRequest request) {
+                dbWorkHour.setFrom(request.getFrom());
+                dbWorkHour.setTo(request.getTo());
+
+                return toInternal(workHourRepo.save(dbWorkHour));
+            }
+
+            /** {@inheritDoc} */
+            @Override
+            public InternalWorkHour delete() {
+                defendDeleted();
+                workHourRepo.delete(dbWorkHour);
+                isDeleted.set(true);
+                return this;
+            }
+
+            /** Defends an already deleted entity.<br> */
+            private void defendDeleted() {
+                if (isDeleted.get()) {
+                    throw OrdersServiceException.validationError(
+                            "DB WorkHour entity already deleted [employee=%s]", dbWorkHour);
+                }
             }
         };
     }

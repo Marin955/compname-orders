@@ -1,6 +1,6 @@
-package com.compname.orders.api.message.request.term;
+package com.compname.orders.api.model.workhour;
 
-import com.compname.orders.api.message.request.ApiIdRequest;
+import com.compname.orders.api.model.ApiIdEntity;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -12,12 +12,14 @@ import java.time.ZonedDateTime;
 @AllArgsConstructor
 @Getter
 @Setter
-public class UpdateTermRequest extends ApiIdRequest {
+public class WorkHour extends ApiIdEntity {
+    private Long employeeId;
     private ZonedDateTime from;
     private ZonedDateTime to;
 
-    public UpdateTermRequest(Long id, ZonedDateTime from, ZonedDateTime to) {
+    public WorkHour(Long id, Long employeeId, ZonedDateTime from, ZonedDateTime to) {
         super(id);
+        this.employeeId = employeeId;
         this.from = from;
         this.to = to;
     }
