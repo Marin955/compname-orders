@@ -4,7 +4,6 @@ import com.compname.orders.api.message.request.business.*;
 import com.compname.orders.core.internal.model.InternalBusiness;
 import com.compname.orders.core.internal.model.InternalCity;
 import com.compname.orders.core.internal.service.InternalOrderService;
-import com.compname.orders.utility.OrdersServiceException;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 

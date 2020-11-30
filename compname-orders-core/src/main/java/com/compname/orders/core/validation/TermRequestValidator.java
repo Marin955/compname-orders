@@ -14,9 +14,6 @@ import java.util.Objects;
 @Service
 public class TermRequestValidator extends AbstractRequestValidator {
 
-    private static final String FROM_TIME = "from time";
-    private static final String TO_TIME = "to time";
-
     private final InternalOrderService service;
 
     public Long validate(GetTermRequest request) {

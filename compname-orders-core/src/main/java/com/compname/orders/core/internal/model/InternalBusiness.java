@@ -11,6 +11,7 @@ import com.compname.orders.core.internal.common.InternalBasicEntity;
 import com.compname.orders.core.internal.common.Updatable;
 
 import java.util.List;
+import java.util.Set;
 
 public interface InternalBusiness extends
         InternalBasicEntity,
@@ -24,5 +25,6 @@ public interface InternalBusiness extends
     Geolocation getGeolocation();
     String getMinInterval();
     Float getRating();
-    List<InternalOffer> getOffers();
+    Set<InternalOffer> getOffers();
+    List<InternalEmployee> getEmployees();
 }

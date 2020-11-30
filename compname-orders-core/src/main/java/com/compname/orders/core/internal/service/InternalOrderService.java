@@ -9,6 +9,7 @@ import com.compname.orders.api.message.request.business.UpdateBusinessRequest;
 import com.compname.orders.api.message.request.city.CreateCityRequest;
 import com.compname.orders.api.message.request.city.SearchCityRequest;
 import com.compname.orders.api.message.request.city.UpdateCityRequest;
+import com.compname.orders.api.message.request.custom.SearchTermByOfferAndTimeRequest;
 import com.compname.orders.api.message.request.employee.CreateEmployeeRequest;
 import com.compname.orders.api.message.request.employee.SearchEmployeeRequest;
 import com.compname.orders.api.message.request.employee.UpdateEmployeeRequest;
@@ -68,8 +69,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.Set;
 import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 
 @AllArgsConstructor
@@ -85,6 +86,40 @@ public class InternalOrderService {
     private final AccountRepository accountRepo;
     private final EmployeeRepository employeeRepo;
     private final WorkHourRepository workHourRepo;
+
+    public List<InternalTerm> findByOfferAndTime(SearchTermByOfferAndTimeRequest request) {
+
+        List<InternalEmployee> employees = getEmployeesByCityAndOffer(request);
+
+        // TODO the rest of this shit
+
+        return null;
+    }
+
+    private List<InternalEmployee> getEmployeesByCityAndOffer(SearchTermByOfferAndTimeRequest request) {
+        return employeeRepo.findAll(
+                (Specification<DbEmployee>)
+                        (root, criteriaQuery, criteriaBuilder) -> {
+                            List<Predicate> predicates = new ArrayList<>();
+
+                            if (Objects.nonNull(request.getCityId())) {
+                                predicates.add(
+                                        criteriaBuilder.equal(
+                                                root.get(DbEmployee.DbEmployeeMapping.BUSINESS.getField())
+                                                        .get(DbBusiness.DbBusinessMapping.CITY_ID.getField()),
+                                                request.getCityId()));
+                            }
+                            predicates.add(
+                                    criteriaBuilder.equal(
+                                            root.join(DbEmployee.DbEmployeeMapping.OFFERS.getField())
+                                                    .get(DbOffer.DbOfferMapping.NAME.getField()),
+                                            request.getOffer()
+                                    )
+                            );
+                            return criteriaBuilder.and(predicates.toArray(new Predicate[0]));
+                        }
+        ).stream().map(this::toInternal).collect(Collectors.toList());
+    }
 
     public InternalBusiness getBusinessBy(Long id) {
         Optional<DbBusiness> result = businessRepo.findById(id);
@@ -114,37 +149,37 @@ public class InternalOrderService {
 
     public List<InternalBusiness> search(SearchBusinessRequest request)
     {
-    return businessRepo
-        .findAll(
-            (Specification<DbBusiness>)
-                (root, criteriaQuery, criteriaBuilder) -> {
-                  List<Predicate> predicates = new ArrayList<>();
+        return businessRepo
+                .findAll(
+                        (Specification<DbBusiness>)
+                                (root, criteriaQuery, criteriaBuilder) -> {
+                                    List<Predicate> predicates = new ArrayList<>();
 
-                  if (Objects.nonNull(request.getName())) {
-                    predicates.add(
-                        criteriaBuilder.equal(
-                            root.get(DbBusiness.DbBusinessMapping.NAME.getField()),
-                            request.getName()));
-                  }
-                  if (Objects.nonNull(request.getOib())) {
-                    predicates.add(
-                        criteriaBuilder.equal(
-                            root.get(DbBusiness.DbBusinessMapping.OIB.getField()),
-                            request.getOib()));
-                  }
-                  if (Objects.nonNull(request.getCity())) {
-                    predicates.add(
-                        criteriaBuilder.equal(
-                            root.get(DbBusiness.DbBusinessMapping.CITY_ID.getField())
-                                .get(DbCity.DbCityMapping.ID.getField()),
-                            cityRepo.findByName(request.getCity()).getId()));
-                  }
-                  return criteriaBuilder.and(predicates.toArray(new Predicate[0]));
-                },
-            PageRequest.of(request.getPageNumber(), request.getPageSize()))
-        .stream()
-        .map(this::toInternal)
-        .collect(Collectors.toList());
+                                    if (Objects.nonNull(request.getName())) {
+                                        predicates.add(
+                                                criteriaBuilder.equal(
+                                                        root.get(DbBusiness.DbBusinessMapping.NAME.getField()),
+                                                        request.getName()));
+                                    }
+                                    if (Objects.nonNull(request.getOib())) {
+                                        predicates.add(
+                                                criteriaBuilder.equal(
+                                                        root.get(DbBusiness.DbBusinessMapping.OIB.getField()),
+                                                        request.getOib()));
+                                    }
+                                    if (Objects.nonNull(request.getCity())) {
+                                        predicates.add(
+                                                criteriaBuilder.equal(
+                                                        root.get(DbBusiness.DbBusinessMapping.CITY_ID.getField())
+                                                                .get(DbCity.DbCityMapping.ID.getField()),
+                                                        cityRepo.findByName(request.getCity()).getId()));
+                                    }
+                                    return criteriaBuilder.and(predicates.toArray(new Predicate[0]));
+                                },
+                        PageRequest.of(request.getPageNumber(), request.getPageSize()))
+                .stream()
+                .map(this::toInternal)
+                .collect(Collectors.toList());
     }
 
     public InternalOffer getOfferBy(Long id) {
@@ -165,7 +200,7 @@ public class InternalOrderService {
         return toInternal(offerRepo.save(dbOffer));
     }
 
-    public List<InternalOffer> search(SearchOfferRequest request)
+    public Set<InternalOffer> search(SearchOfferRequest request)
     {
     return offerRepo
         .findAll(
@@ -190,7 +225,7 @@ public class InternalOrderService {
             PageRequest.of(request.getPageNumber(), request.getPageSize()))
         .stream()
         .map(this::toInternal)
-        .collect(Collectors.toList());
+        .collect(Collectors.toSet());
     }
 
     public InternalCity getCityBy(Long id) {
@@ -514,8 +549,15 @@ public class InternalOrderService {
             }
 
             @Override
-            public List<InternalOffer> getOffers() {
+            public Set<InternalOffer> getOffers() {
                 return dbBusiness.getOffers().stream()
+                        .map(InternalOrderService.this::toInternal)
+                        .collect(Collectors.toSet());
+            }
+
+            @Override
+            public List<InternalEmployee> getEmployees() {
+                return dbBusiness.getEmployees().stream()
                         .map(InternalOrderService.this::toInternal)
                         .collect(Collectors.toList());
             }
@@ -533,7 +575,8 @@ public class InternalOrderService {
                         getGeolocation(),
                         getRating(),
                         getMinInterval(),
-                        getOffers().stream().map(ApiConvertible::toApi).collect(Collectors.toList())
+                        getOffers().stream().map(ApiConvertible::toApi).collect(Collectors.toList()),
+                        getEmployees().stream().map(ApiConvertible::toApi).collect(Collectors.toList())
                 );
             }
 
@@ -920,8 +963,16 @@ public class InternalOrderService {
             public String getTitle() { return dbEmployee.getTitle(); }
 
             @Override
-            public List<InternalOffer> getOffers() {
+            public Set<InternalOffer> getOffers() {
                 return dbEmployee.getOffers()
+                        .stream()
+                        .map(InternalOrderService.this::toInternal)
+                        .collect(Collectors.toSet());
+            }
+
+            @Override
+            public List<InternalWorkHour> getWorkHours() {
+                return dbEmployee.getWorkHours()
                         .stream()
                         .map(InternalOrderService.this::toInternal)
                         .collect(Collectors.toList());
@@ -939,7 +990,8 @@ public class InternalOrderService {
                         getCreatedBy(),
                         getTitle(),
                         getBusinessId(),
-                        getOffers().stream().map(ApiConvertible::toApi).collect(Collectors.toSet())
+                        getOffers().stream().map(ApiConvertible::toApi).collect(Collectors.toSet()),
+                        getWorkHours().stream().map(ApiConvertible::toApi).collect(Collectors.toList())
                 );
             }
 

@@ -8,6 +8,7 @@ import com.compname.orders.core.internal.common.InternalBasicEntity;
 import com.compname.orders.core.internal.common.Updatable;
 
 import java.util.List;
+import java.util.Set;
 
 public interface InternalEmployee extends
         InternalBasicEntity,
@@ -16,6 +17,7 @@ public interface InternalEmployee extends
         Updatable<InternalEmployee, UpdateEmployeeRequest> {
     String getName();
     String getTitle();
-    List<InternalOffer> getOffers();
+    Set<InternalOffer> getOffers();
+    List<InternalWorkHour> getWorkHours();
     Long getBusinessId();
 }

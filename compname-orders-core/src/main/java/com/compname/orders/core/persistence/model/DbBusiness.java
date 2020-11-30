@@ -69,6 +69,9 @@ public class DbBusiness extends DbEntity<Long> {
     @OneToMany(fetch = FetchType.EAGER, orphanRemoval = true, mappedBy = "business")
     private Set<DbOffer> offers = new HashSet<>();
 
+    @OneToMany(fetch = FetchType.EAGER, orphanRemoval = true, mappedBy = "business")
+    private Set<DbEmployee> employees = new HashSet<>();
+
     public DbBusiness(Long id) {
         this.id = id;
     }

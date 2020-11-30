@@ -1,6 +1,7 @@
 package com.compname.orders.api.model.business;
 
 import com.compname.orders.api.model.ApiBasicEntity;
+import com.compname.orders.api.model.employee.Employee;
 import com.compname.orders.api.model.offer.Offer;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -21,8 +22,9 @@ public class Business extends ApiBasicEntity {
     private Float rating;
     private String minInterval;
     private List<Offer> offers;
+    private List<Employee> employees;
 
-    public Business(Long id, String name, ZonedDateTime created, String createdBy, Long oib, Address address, ContactInfo contactInfo, Geolocation geolocation, Float rating, String minInterval, List<Offer> offers) {
+    public Business(Long id, String name, ZonedDateTime created, String createdBy, Long oib, Address address, ContactInfo contactInfo, Geolocation geolocation, Float rating, String minInterval, List<Offer> offers, List<Employee> employees) {
         super(id, name, created, createdBy);
         this.oib = oib;
         this.address = address;
@@ -31,9 +33,10 @@ public class Business extends ApiBasicEntity {
         this.rating = rating;
         this.minInterval = minInterval;
         this.offers = offers;
+        this.employees = employees;
     }
 
-    public Business(String name, ZonedDateTime created, String createdBy, Long oib, Address address, ContactInfo contactInfo, Geolocation geolocation, Float rating, String minInterval, List<Offer> offers) {
+    public Business(String name, ZonedDateTime created, String createdBy, Long oib, Address address, ContactInfo contactInfo, Geolocation geolocation, Float rating, String minInterval, List<Offer> offers, List<Employee> employees) {
         super(name, created, createdBy);
         this.oib = oib;
         this.address = address;
@@ -42,5 +45,6 @@ public class Business extends ApiBasicEntity {
         this.rating = rating;
         this.minInterval = minInterval;
         this.offers = offers;
+        this.employees = employees;
     }
 }
