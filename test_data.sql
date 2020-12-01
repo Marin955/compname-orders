@@ -1,8 +1,8 @@
-INSERT INTO public.city (id, name, postal_code) VALUES (1, 'ZAGREB', 10000);
-INSERT INTO public.city (id, name, postal_code) VALUES (2, 'ZAGREB-DUBRAVA', 10040);
-INSERT INTO public.city (id, name, postal_code) VALUES (3, 'SLAVONSKI BROD', 35000);
-INSERT INTO public.city (id, name, postal_code) VALUES (4, 'OSIJEK', 31000);
-INSERT INTO public.city (id, name, postal_code) VALUES (5, 'ZADAR', 23000);
+INSERT INTO public.extendedCity (id, name, postal_code) VALUES (1, 'ZAGREB', 10000);
+INSERT INTO public.extendedCity (id, name, postal_code) VALUES (2, 'ZAGREB-DUBRAVA', 10040);
+INSERT INTO public.extendedCity (id, name, postal_code) VALUES (3, 'SLAVONSKI BROD', 35000);
+INSERT INTO public.extendedCity (id, name, postal_code) VALUES (4, 'OSIJEK', 31000);
+INSERT INTO public.extendedCity (id, name, postal_code) VALUES (5, 'ZADAR', 23000);
 INSERT INTO public.business (id, address, created, created_by, latitude, longitude, mail, min_interval, name, oib, phone, rating, website, city_id) VALUES (1, 'Avenija Dubrava 69', '2020-11-27 11:32:03.292000', 'marin', 16.044827, 45.82598, 'friz.ema@gmail.com', 'PT15M', 'Frizerski salon EMA', 1324132455, '01-234-5566', 5, 'www.friz-ema.hr', 2);
 INSERT INTO public.business (id, address, created, created_by, latitude, longitude, mail, min_interval, name, oib, phone, rating, website, city_id) VALUES (2, 'Ulica Vile Velebita 1G', '2020-11-27 11:33:52.301000', 'marin', 16.044928, 45.82298, 'salonmarko@gmail.com', 'PT10M', 'Kozmetički salon MARKO', 1333138455, '01-284-9963', 5, 'www.jasammarkoimamsalon.hr', 2);
 INSERT INTO public.business (id, address, created, created_by, latitude, longitude, mail, min_interval, name, oib, phone, rating, website, city_id) VALUES (3, 'Nikole Zrinskog 1', '2020-11-27 11:34:49.823000', 'marin', 15.044927, 44.82298, 'afrodita@gmail.com', 'PT30M', 'Kozmetički salon AFRODITA', 1333138411, '035-284-963', 5, 'www.afrodita-salon.hr', 3);
@@ -34,7 +34,7 @@ INSERT INTO public.employee_offer_mapping (employee_id, offer_id) VALUES (5, 6);
 INSERT INTO public.employee_offer_mapping (employee_id, offer_id) VALUES (6, 7);
 INSERT INTO public.employee_offer_mapping (employee_id, offer_id) VALUES (6, 5);
 
-SELECT setval('s_city', (SELECT MAX(id) FROM city));
+SELECT setval('s_city', (SELECT MAX(id) FROM extendedCity));
 SELECT setval('s_business', (SELECT MAX(id) FROM business));
 SELECT setval('s_employee', (SELECT MAX(id) FROM employee));
 SELECT setval('s_offer', (SELECT MAX(id) FROM offer));

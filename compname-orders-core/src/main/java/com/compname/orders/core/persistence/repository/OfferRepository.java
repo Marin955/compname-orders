@@ -6,4 +6,6 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface OfferRepository extends JpaRepository<DbOffer, Long>, JpaSpecificationExecutor<DbOffer> { }
+public interface OfferRepository extends JpaRepository<DbOffer, Long>, JpaSpecificationExecutor<DbOffer> {
+    DbOffer findByName(String offerName);
+}

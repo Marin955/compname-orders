@@ -10,12 +10,12 @@ import lombok.Setter;
 @AllArgsConstructor
 @Getter
 @Setter
-public class SearchCityRequest extends ApiPaginationRequest {
+public class SearchExtendedCityRequest extends ApiPaginationRequest {
 
     private String name;
     private Integer postalCode;
 
-    public SearchCityRequest(Integer pageNumber, Integer pageSize, String name, Integer postalCode) {
+    public SearchExtendedCityRequest(Integer pageNumber, Integer pageSize, String name, Integer postalCode) {
         super(pageNumber, pageSize);
         this.name = name;
         this.postalCode = postalCode;

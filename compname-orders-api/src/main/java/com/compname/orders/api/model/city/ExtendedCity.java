@@ -13,13 +13,15 @@ import java.util.List;
 @AllArgsConstructor
 @Getter
 @Setter
-public class City extends ApiIdEntity {
+public class ExtendedCity extends ApiIdEntity {
     private String name;
     private Integer postalCode;
+    private List<Business> businesses;
 
-    public City(Long id, String name, Integer postalCode) {
+    public ExtendedCity(Long id, String name, Integer postalCode, List<Business> businesses) {
         super(id);
         this.name = name;
         this.postalCode = postalCode;
+        this.businesses = businesses;
     }
 }

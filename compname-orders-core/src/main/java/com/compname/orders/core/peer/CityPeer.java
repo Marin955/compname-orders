@@ -3,16 +3,22 @@ package com.compname.orders.core.peer;
 import com.compname.orders.api.message.request.city.CreateCityRequest;
 import com.compname.orders.api.message.request.city.DeleteCityRequest;
 import com.compname.orders.api.message.request.city.GetCityRequest;
+import com.compname.orders.api.message.request.city.GetExtendedCityRequest;
 import com.compname.orders.api.message.request.city.SearchCityRequest;
+import com.compname.orders.api.message.request.city.SearchExtendedCityRequest;
 import com.compname.orders.api.message.request.city.UpdateCityRequest;
 import com.compname.orders.api.message.response.city.CreateCityResponse;
 import com.compname.orders.api.message.response.city.DeleteCityResponse;
 import com.compname.orders.api.message.response.city.GetCityResponse;
+import com.compname.orders.api.message.response.city.GetExtendedCityResponse;
 import com.compname.orders.api.message.response.city.SearchCityResponse;
+import com.compname.orders.api.message.response.city.SearchExtendedCityResponse;
 import com.compname.orders.api.message.response.city.UpdateCityResponse;
 import com.compname.orders.api.model.city.City;
+import com.compname.orders.api.model.city.ExtendedCity;
 import com.compname.orders.api.service.CityService;
 import com.compname.orders.core.internal.common.ApiConvertible;
+import com.compname.orders.core.internal.model.InternalCity;
 import com.compname.orders.core.internal.service.InternalOrderService;
 import com.compname.orders.core.validation.CityRequestValidator;
 import com.compname.orders.utility.OrdersServiceException;
@@ -28,6 +34,7 @@ import java.util.stream.Collectors;
 @Service
 @Transactional
 public class CityPeer implements CityService {
+
     private final CityRequestValidator validator;
     private final InternalOrderService service;
 
@@ -43,8 +50,7 @@ public class CityPeer implements CityService {
     }
 
     @Override
-    public GetCityResponse get(GetCityRequest request) throws OrdersServiceException
-    {
+    public GetCityResponse get(GetCityRequest request) throws OrdersServiceException {
         City city;
         try{
             validator.validate(request);
@@ -55,6 +61,21 @@ public class CityPeer implements CityService {
             return new GetCityResponse(request, ResponseCode.ENTITY_NOT_FOUND, null);
         }
         return new GetCityResponse(request, ResponseCode.OK, city);
+    }
+
+    @Override
+    public GetExtendedCityResponse getExtended(GetExtendedCityRequest request) throws OrdersServiceException
+    {
+        ExtendedCity extendedCity;
+        try{
+            validator.validate(request);
+            extendedCity = service.getCityBy(request.getId()).toExtendedApi();
+        } catch (OrdersServiceException exception) {
+            return new GetExtendedCityResponse(request, ResponseCode.REQUEST_INVALID, null);
+        } catch (NullPointerException nullPointerException) {
+            return new GetExtendedCityResponse(request, ResponseCode.ENTITY_NOT_FOUND, null);
+        }
+        return new GetExtendedCityResponse(request, ResponseCode.OK, extendedCity);
     }
 
     @Override
@@ -69,13 +90,24 @@ public class CityPeer implements CityService {
     }
 
     @Override
-    public SearchCityResponse search(SearchCityRequest request) throws OrdersServiceException
-    {
+    public SearchCityResponse search(SearchCityRequest request) throws OrdersServiceException {
         try{ validator.validate(request); } catch (OrdersServiceException exception) {
             return new SearchCityResponse(request, ResponseCode.REQUEST_INVALID, null, 0,0);
         }
         List<City> results = service.search(request).stream().map(ApiConvertible::toApi).collect(Collectors.toList());
         return new SearchCityResponse(
+                request, ResponseCode.OK, results, request.getPageNumber(), request.getPageSize()
+        );
+    }
+
+    @Override
+    public SearchExtendedCityResponse searchExtended(SearchExtendedCityRequest request) throws OrdersServiceException
+    {
+        try{ validator.validate(request); } catch (OrdersServiceException exception) {
+            return new SearchExtendedCityResponse(request, ResponseCode.REQUEST_INVALID, null, 0,0);
+        }
+        List<ExtendedCity> results = service.search(request).stream().map(InternalCity::toExtendedApi).collect(Collectors.toList());
+        return new SearchExtendedCityResponse(
                 request, ResponseCode.OK, results, request.getPageNumber(), request.getPageSize()
         );
     }

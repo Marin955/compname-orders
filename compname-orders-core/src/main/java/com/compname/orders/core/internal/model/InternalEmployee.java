@@ -19,5 +19,6 @@ public interface InternalEmployee extends
     String getTitle();
     Set<InternalOffer> getOffers();
     List<InternalWorkHour> getWorkHours();
+    List<InternalTerm> getTerms();
     Long getBusinessId();
 }

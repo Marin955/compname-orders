@@ -24,7 +24,7 @@ create sequence s_city;
 
 alter sequence s_city owner to postgres;
 
-create table city
+create table extendedCity
 (
     id                      bigint       not null
         constraint pk_city_id
@@ -33,11 +33,11 @@ create table city
     postal_code             int
 );
 
-alter table city
+alter table extendedCity
     owner to postgres;
 
 create unique index uk_city_name
-    on city (name);
+    on extendedCity (name);
 
 create table business
 (
@@ -50,7 +50,7 @@ create table business
     created_by              varchar(64) not null,
     city_id                 bigint      not null
         constraint fk_business_city_id
-            references city
+            references extendedCity
             on delete cascade,
     address                 varchar(512) not null,
     longitude               float4      not null,

@@ -3,7 +3,9 @@ package com.compname.orders.core.validation;
 import com.compname.orders.api.message.request.city.CreateCityRequest;
 import com.compname.orders.api.message.request.city.DeleteCityRequest;
 import com.compname.orders.api.message.request.city.GetCityRequest;
+import com.compname.orders.api.message.request.city.GetExtendedCityRequest;
 import com.compname.orders.api.message.request.city.SearchCityRequest;
+import com.compname.orders.api.message.request.city.SearchExtendedCityRequest;
 import com.compname.orders.api.message.request.city.UpdateCityRequest;
 import com.compname.orders.core.internal.model.InternalCity;
 import com.compname.orders.core.internal.service.InternalOrderService;
@@ -23,6 +25,10 @@ public class CityRequestValidator extends AbstractRequestValidator {
         return validateIdRequest(request);
     }
 
+    public Long validate(GetExtendedCityRequest request) {
+        return validateIdRequest(request);
+    }
+
     public Long validate(DeleteCityRequest request) {
         return validateIdRequest(request);
     }
@@ -35,9 +41,9 @@ public class CityRequestValidator extends AbstractRequestValidator {
         return request;
     }
 
-    public SearchCityRequest validate(SearchCityRequest request) {
-        return validatePaginationRequest(request);
-    }
+    public SearchCityRequest validate(SearchCityRequest request) { return validatePaginationRequest(request); }
+
+    public SearchExtendedCityRequest validate(SearchExtendedCityRequest request) { return validatePaginationRequest(request); }
 
     public UpdateCityRequest validate(UpdateCityRequest request) {
         validateIdRequest(request);

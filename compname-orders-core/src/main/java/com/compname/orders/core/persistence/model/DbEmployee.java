@@ -16,10 +16,13 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OrderBy;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import java.time.ZonedDateTime;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @NoArgsConstructor
@@ -54,10 +57,12 @@ public class DbEmployee extends DbEntity<Long> {
     private String title;
 
     @OneToMany(fetch = FetchType.EAGER, orphanRemoval = true, mappedBy = "employee")
-    private Set<DbWorkHour> workHours;
+    @OrderBy(value = "from asc")
+    private List<DbWorkHour> workHours = new ArrayList<>();
 
     @OneToMany(fetch = FetchType.EAGER, orphanRemoval = true, mappedBy = "employee")
-    private Set<DbTerm> terms = new HashSet<>();
+    @OrderBy(value = "from asc")
+    private List<DbTerm> terms = new ArrayList<>();
 
     @ManyToMany
     @JoinTable(

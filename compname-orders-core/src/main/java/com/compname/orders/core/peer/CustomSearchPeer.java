@@ -31,7 +31,7 @@ public class CustomSearchPeer implements CustomSearchService {
         } catch (OrdersServiceException e) {
             return new SearchByOfferAndTimeResponse(request, ResponseCode.REQUEST_INVALID, null, 0,0);
         }
-        List<Term> terms = service.findByOfferAndTime(request).stream().map(ApiConvertible::toApi).collect(Collectors.toList());
+        List<Term> terms = service.findByOfferAndTime(request);
         return new SearchByOfferAndTimeResponse(request, ResponseCode.OK, terms, request.getPageNumber(), request.getPageSize());
     }
 }

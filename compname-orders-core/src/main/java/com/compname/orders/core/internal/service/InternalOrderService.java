@@ -8,6 +8,7 @@ import com.compname.orders.api.message.request.business.SearchBusinessRequest;
 import com.compname.orders.api.message.request.business.UpdateBusinessRequest;
 import com.compname.orders.api.message.request.city.CreateCityRequest;
 import com.compname.orders.api.message.request.city.SearchCityRequest;
+import com.compname.orders.api.message.request.city.SearchExtendedCityRequest;
 import com.compname.orders.api.message.request.city.UpdateCityRequest;
 import com.compname.orders.api.message.request.custom.SearchTermByOfferAndTimeRequest;
 import com.compname.orders.api.message.request.employee.CreateEmployeeRequest;
@@ -28,6 +29,7 @@ import com.compname.orders.api.model.business.Business;
 import com.compname.orders.api.model.business.ContactInfo;
 import com.compname.orders.api.model.business.Geolocation;
 import com.compname.orders.api.model.city.City;
+import com.compname.orders.api.model.city.ExtendedCity;
 import com.compname.orders.api.model.employee.Employee;
 import com.compname.orders.api.model.offer.Offer;
 import com.compname.orders.api.model.term.Term;
@@ -87,13 +89,97 @@ public class InternalOrderService {
     private final EmployeeRepository employeeRepo;
     private final WorkHourRepository workHourRepo;
 
-    public List<InternalTerm> findByOfferAndTime(SearchTermByOfferAndTimeRequest request) {
+    public List<Term> findByOfferAndTime(SearchTermByOfferAndTimeRequest request) {
 
         List<InternalEmployee> employees = getEmployeesByCityAndOffer(request);
+        List<Term> resultTerms = new ArrayList<>();
 
-        // TODO the rest of this shit
+        employees.forEach(employee -> {
+            InternalOffer offer = employee.getOffers()
+                    .stream()
+                    .filter(internalOffer -> internalOffer.getName().equals(request.getOffer()))
+                    .collect(Collectors.toList()).get(0);
+            List<WorkHour> relevantWorkHours = findRelevantWorkHours(request.getFrom(), request.getTo(), employee.getWorkHours());
+            if (relevantWorkHours.isEmpty()) return;
 
-        return null;
+            relevantWorkHours.forEach(workHour -> {
+                List<Term> relevantTerms = findRelevantTerms(workHour.getFrom(), workHour.getTo(), employee.getTerms());
+                if (relevantTerms.isEmpty()) return;
+                if (Duration.between(workHour.getFrom(), relevantTerms.get(0).getFrom())
+                        .compareTo(offer.getDuration()) >= 0) {
+                    resultTerms.add(new Term(
+                            ZonedDateTime.now(),
+                            offer.getId(),
+                            0L,
+                            employee.getId(),
+                            workHour.getFrom(),
+                            relevantTerms.get(0).getFrom()
+                    ));
+                }
+                if (Duration.between(relevantTerms.get(relevantTerms.size()-1).getTo(), workHour.getTo())
+                        .compareTo(offer.getDuration()) >= 0) {
+                    resultTerms.add(new Term(
+                            ZonedDateTime.now(),
+                            offer.getId(),
+                            0L,
+                            employee.getId(),
+                            relevantTerms.get(relevantTerms.size()-1).getTo(),
+                            workHour.getTo()
+                    ));
+                }
+                if (relevantTerms.size() == 1) return;
+                for (int i = 0; i<relevantTerms.size()-1; i++) {
+                    if (Duration.between(
+                            relevantTerms.get(i).getTo(),
+                            relevantTerms.get(i+1).getFrom())
+                                .compareTo(offer.getDuration()) >= 0) {
+                        resultTerms.add(new Term(
+                                ZonedDateTime.now(),
+                                offer.getId(),
+                                0L,
+                                employee.getId(),
+                                relevantTerms.get(i).getTo(),
+                                relevantTerms.get(i+1).getFrom()
+                        ));
+                    }
+                }
+            });
+        });
+
+        return resultTerms;
+    }
+
+    private List<WorkHour> findRelevantWorkHours(ZonedDateTime reqFrom, ZonedDateTime reqTo, List<InternalWorkHour> workHours) {
+        List<WorkHour> relevantWorkHours = new ArrayList<>();
+
+        for(InternalWorkHour workHour : workHours) {
+            if (workHour.getFrom().isBefore(reqFrom) && workHour.getTo().isAfter(reqFrom) && workHour.getTo().isBefore(reqTo)) {
+                WorkHour tmpWorkHour = workHour.toApi();
+                tmpWorkHour.setFrom(reqFrom);
+                relevantWorkHours.add(tmpWorkHour);
+            }
+            else if (workHour.getFrom().isAfter(reqFrom) && workHour.getTo().isBefore(reqTo)) {
+                relevantWorkHours.add(workHour.toApi());
+            }
+            else if (workHour.getFrom().isAfter(reqFrom) && workHour.getFrom().isBefore(reqTo)) {
+                WorkHour tmpWorkHour = workHour.toApi();
+                tmpWorkHour.setTo(reqTo);
+                relevantWorkHours.add(tmpWorkHour);
+                break;
+            }
+        }
+         return relevantWorkHours;
+    }
+
+    private List<Term> findRelevantTerms(ZonedDateTime whFrom, ZonedDateTime whTo, List<InternalTerm> terms) {
+        List<Term> relevantTerms = new ArrayList<>();
+
+        for(InternalTerm term : terms) {
+            if(term.getFrom().isAfter(whFrom) && term.getTo().isBefore(whTo)) relevantTerms.add(term.toApi());
+            if(term.getFrom().isAfter(whTo)) break;
+        }
+
+        return relevantTerms;
     }
 
     private List<InternalEmployee> getEmployeesByCityAndOffer(SearchTermByOfferAndTimeRequest request) {
@@ -246,30 +332,38 @@ public class InternalOrderService {
         return toInternal(cityRepo.save(dbCity));
     }
 
-    public List<InternalCity> search(SearchCityRequest request) {
-    return cityRepo
-        .findAll(
-            ((Specification<DbCity>)
-                (root, criteriaQuery, criteriaBuilder) -> {
-                  List<Predicate> predicates = new ArrayList<>();
+    public List<InternalCity> search(SearchExtendedCityRequest request) {
+        return commonSearch(request.getName(), request.getPostalCode(), request.getPageNumber(), request.getPageSize());
+    }
 
-                  if (Objects.nonNull(request.getName())) {
-                    predicates.add(
-                        criteriaBuilder.equal(
-                            root.get(DbCity.DbCityMapping.NAME.getField()), request.getName()));
-                  }
-                  if (Objects.nonNull(request.getPostalCode())) {
-                    predicates.add(
-                        criteriaBuilder.equal(
-                            root.get(DbCity.DbCityMapping.POSTAL_CODE.getField()),
-                            request.getPostalCode()));
-                  }
-                  return criteriaBuilder.and(predicates.toArray(new Predicate[0]));
-                }),
-            PageRequest.of(request.getPageNumber(), request.getPageSize()))
-        .stream()
-        .map(this::toInternal)
-        .collect(Collectors.toList());
+    public List<InternalCity> search(SearchCityRequest request) {
+        return commonSearch(request.getName(), request.getPostalCode(), request.getPageNumber(), request.getPageSize());
+    }
+
+    private List<InternalCity> commonSearch(String name, Integer postalCode, Integer pageNumber, Integer pageSize) {
+        return cityRepo
+                .findAll(
+                        ((Specification<DbCity>)
+                                (root, criteriaQuery, criteriaBuilder) -> {
+                                    List<Predicate> predicates = new ArrayList<>();
+
+                                    if (Objects.nonNull(name)) {
+                                        predicates.add(
+                                                criteriaBuilder.equal(
+                                                        root.get(DbCity.DbCityMapping.NAME.getField()), name));
+                                    }
+                                    if (Objects.nonNull(postalCode)) {
+                                        predicates.add(
+                                                criteriaBuilder.equal(
+                                                        root.get(DbCity.DbCityMapping.POSTAL_CODE.getField()),
+                                                        postalCode));
+                                    }
+                                    return criteriaBuilder.and(predicates.toArray(new Predicate[0]));
+                                }),
+                        PageRequest.of(pageNumber, pageSize))
+                .stream()
+                .map(this::toInternal)
+                .collect(Collectors.toList());
     }
 
     public InternalAccount getAccountBy(Long id) {
@@ -469,6 +563,13 @@ public class InternalOrderService {
                                 (root, criteriaQuery, criteriaBuilder) -> {
                                     List<Predicate> predicates = new ArrayList<>();
 
+                                    if (Objects.nonNull(request.getEmployeeId())) {
+                                        predicates.add(
+                                                criteriaBuilder.equal(
+                                                        root.get(DbWorkHour.DbWorkHourMapping.EMPLOYEE.getField())
+                                                        .get(DbEmployee.DbEmployeeMapping.ID.getField()),
+                                                        request.getEmployeeId()));
+                                    }
                                     if (Objects.nonNull(request.getFrom())) {
                                         predicates.add(
                                                 criteriaBuilder.greaterThanOrEqualTo(
@@ -737,6 +838,14 @@ public class InternalOrderService {
                 return new City(
                         getId(),
                         getName(),
+                        getPostalCode()
+                );
+            }
+
+            public ExtendedCity toExtendedApi() {
+                return new ExtendedCity(
+                        getId(),
+                        getName(),
                         getPostalCode(),
                         getBusinesses().stream().map(ApiConvertible::toApi).collect(Collectors.toList())
                 );
@@ -979,6 +1088,14 @@ public class InternalOrderService {
             }
 
             @Override
+            public List<InternalTerm> getTerms() {
+                return dbEmployee.getTerms()
+                        .stream()
+                        .map(InternalOrderService.this::toInternal)
+                        .collect(Collectors.toList());
+            }
+
+            @Override
             public Long getBusinessId() { return dbEmployee.getBusiness().getId(); }
 
             @Override
@@ -991,7 +1108,8 @@ public class InternalOrderService {
                         getTitle(),
                         getBusinessId(),
                         getOffers().stream().map(ApiConvertible::toApi).collect(Collectors.toSet()),
-                        getWorkHours().stream().map(ApiConvertible::toApi).collect(Collectors.toList())
+                        getWorkHours().stream().map(ApiConvertible::toApi).collect(Collectors.toList()),
+                        getTerms().stream().map(ApiConvertible::toApi).collect(Collectors.toSet())
                 );
             }
 

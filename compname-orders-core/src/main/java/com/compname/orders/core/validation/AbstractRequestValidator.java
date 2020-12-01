@@ -22,7 +22,7 @@ public abstract class AbstractRequestValidator
     private static final Integer DEFAULT_PAGE_SIZE = 20;
     private static final Integer MINIMUM_PAGE_SIZE = 1;
     private static final Integer MINIMUM_PAGE_NUMBER = 0;
-    private static final Integer MAXIMUM_ENTITIES_PER_PAGE = 100;
+    private static final Integer MAXIMUM_ENTITIES_PER_PAGE = 1000;
 
     protected static final String NAME = "name";
     protected static final String CREATED = "created";
@@ -122,7 +122,7 @@ public abstract class AbstractRequestValidator
             notLessThan(request.getPageSize(), MINIMUM_PAGE_SIZE, "page size");
             notGreaterThan(request.getPageSize(), MAXIMUM_ENTITIES_PER_PAGE, "page size");
         } else {
-            request.setPageNumber(1);
+            request.setPageNumber(0);
             request.setPageSize(DEFAULT_PAGE_SIZE);
         }
 
